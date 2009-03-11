@@ -27,11 +27,27 @@ class Testing extends Mixin {
         // $this->mixin('UhOh');
     }
     
+    public function real_method() {
+        echo 'real_method';
+    }
+    
 }
 
 $t = new Testing;
 
 $t->testing();
+echo "\n";
+
 $t->testing2();
+echo "\n";
+
+echo $t->respond_to('real_method');
+echo "\n";
+
+echo $t->respond_to('testing');
+echo "\n";
+
+echo $t->respond_to('invalid');
+echo "\n";
 
 ?>

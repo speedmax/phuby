@@ -2,6 +2,7 @@
   * Rename to phby
   * Add test directory
   * Move Mixin#__call logic into Mixin#send
+  * Add Mixin#respond_to
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit

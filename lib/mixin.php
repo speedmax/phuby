@@ -43,6 +43,10 @@ class Mixin {
         return $this->mixin_properties;
     }
     
+    public function respond_to($method) {
+        return isset($this->mixin_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
+    }
+    
     public function send($method, $arguments) {
         if (isset($this->mixin_methods[$method])) {
             $method_call = $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1].'::'.$method.'(';
