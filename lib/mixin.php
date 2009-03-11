@@ -43,12 +43,7 @@ class Mixin {
         return $this->mixin_properties;
     }
     
-    public function super($arguments = null) {
-        $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
-        echo $caller['function'];
-    }
-    
-    protected function __call($method, $arguments) {
+    public function send($method, $arguments) {
         if (isset($this->mixin_methods[$method])) {
             $method_call = $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1].'::'.$method.'(';
             $arguments_count = count($arguments);
@@ -63,6 +58,15 @@ class Mixin {
         } else {
             trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
         }
+    }
+    
+    public function super($arguments = null) {
+        $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
+        echo $caller['function'];
+    }
+    
+    protected function __call($method, $arguments) {
+        $this->send($method, $arguments);
     }
     
     protected function __get($key) {
