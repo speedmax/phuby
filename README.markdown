@@ -1,11 +1,11 @@
-# phby
+# phuby
 
 rubyisms in php
 
 
 ## Installation
 
-	git clone git://github.com/shuber/phby.git
+	git clone git://github.com/shuber/phuby.git
 
 
 ## Examples

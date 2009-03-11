@@ -1,6 +1,6 @@
 <?php
 
-require_once '../phby.php';
+require_once '../phuby.php';
 
 class Whoa {
     public function testing() {
