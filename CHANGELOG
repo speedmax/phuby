@@ -3,6 +3,7 @@
   * Add test directory
   * Move Mixin#__call logic into Mixin#send
   * Add Mixin#respond_to
+  * Mixin#send now calls real class methods if they exist
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit

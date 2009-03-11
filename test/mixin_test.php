@@ -31,6 +31,10 @@ class Testing extends Mixin {
         echo 'real_method';
     }
     
+    protected function protected_method() {
+        echo 'protected_method';
+    }
+    
 }
 
 $t = new Testing;
@@ -41,10 +45,16 @@ echo "\n";
 $t->testing2();
 echo "\n";
 
+$t->send('testing');
+echo "\n";
+
 echo $t->respond_to('real_method');
 echo "\n";
 
 echo $t->respond_to('testing');
+echo "\n";
+
+echo $t->respond_to('protected_method');
 echo "\n";
 
 echo $t->respond_to('invalid');
