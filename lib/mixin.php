@@ -6,23 +6,28 @@ class Mixin {
     protected $mixin_parents = array();
     protected $mixin_properties = array();
     
-    public function mixin($class) {        
-        $class_name = (is_object($class)) ? get_class($class) : $class;
-        if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
+    public function mixin($args) {
+        $classes = array();
+        foreach (func_get_args() as $arg) $classes = array_merge($classes, ((is_array($arg) ? $arg : array($arg))));
         
-        // Mixin methods
-        $methods = get_class_methods($class_name);
-        foreach ($methods as $method) {
-            $this->mixin_methods[$method] = $class_name;
+        foreach (array_unique($classes) as $class) {
+            $class_name = (is_object($class)) ? get_class($class) : $class;
+            if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
+            
+            // Mixin methods
+            $methods = get_class_methods($class_name);
+            foreach ($methods as $method) {
+                $this->mixin_methods[$method] = $class_name;
+            }
+            
+            // Mixin properties
+            $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
+            foreach ($properties as $key => $value) {
+                $this->mixin_properties[$key] = $value;
+            }
+            
+            if (!in_array($class_name, $this->mixin_parents)) $this->mixin_parents[] = $class_name;
         }
-        
-        // Mixin properties
-        $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
-        foreach ($properties as $key => $value) {
-            $this->mixin_properties[$key] = $value;
-        }
-        
-        if (!in_array($class_name, $this->mixin_parents)) $this->mixin_parents[] = $class_name;
     }
     
     public function mixin_methods() {
