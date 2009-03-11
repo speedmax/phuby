@@ -2,3 +2,4 @@
   * Initial commit
   * Make project structure more like a gem
   * Mixin#mixin now accepts an array or multiple arguments
+  * Each member in Mixin#mixin_methods contains an array of the mixed in methods

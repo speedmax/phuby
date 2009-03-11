@@ -17,7 +17,8 @@ class Mixin {
             // Mixin methods
             $methods = get_class_methods($class_name);
             foreach ($methods as $method) {
-                $this->mixin_methods[$method] = $class_name;
+                if (!isset($this->mixin_methods[$method])) $this->mixin_methods[$method] = array();
+                $this->mixin_methods[$method][] = $class_name;
             }
             
             // Mixin properties
@@ -49,8 +50,8 @@ class Mixin {
     
     protected function __call($method, $arguments) {
         if (isset($this->mixin_methods[$method])) {
+            $method_call = $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1].'::'.$method.'(';
             $arguments_count = count($arguments);
-            $method_call = $this->mixin_methods[$method].'::'.$method.'(';
             if ($arguments_count) {
                 $method_call .= '$arguments[0]';
                 for ($i = 1; $i < $arguments_count; $i++) {
