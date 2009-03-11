@@ -22,9 +22,8 @@ class UhOh {
 
 class Testing extends Mixin {
     
-    public function __construct() {
+    public function initialize() {
         $this->mixin('Whoa', 'Dude');
-        // $this->mixin('UhOh');
     }
     
     public function real_method() {

@@ -6,6 +6,13 @@ class Mixin {
     protected $mixin_parents = array();
     protected $mixin_properties = array();
     
+    public function __construct($arguments = null) {
+        if ($this->respond_to('initialize')) {
+            $arguments = func_get_args();
+            $this->send('initialize', $arguments);
+        }
+    }
+    
     public function mixin($args) {
         $classes = array();
         foreach (func_get_args() as $arg) $classes = array_merge($classes, ((is_array($arg) ? $arg : array($arg))));
