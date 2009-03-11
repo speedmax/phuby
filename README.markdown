@@ -1,21 +1,18 @@
-# meta\_php
+# phby
 
-A sandbox for trying to implement my favorite features of ruby in php
-
-
-Installation
-------------
-
-	git clone git://github.com/shuber/meta_php.git
+rubyisms in php
 
 
-Usage
------
+## Installation
+
+	git clone git://github.com/shuber/phby.git
+
+
+## Examples
 
 Coming soon...
 
 
-Contact
--------
+## Contact
 
 Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)

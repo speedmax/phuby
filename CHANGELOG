@@ -1,3 +1,6 @@
+2009-03-11 - Sean Huber (shuber@huberry.com)
+  * Rename to phby
+
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit
   * Make project structure more like a gem
