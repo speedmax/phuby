@@ -59,7 +59,7 @@ class Object {
     }
     
     public function is_a($class) {
-        return is_a($this, $class);
+        return $this instanceof $class;
     }
     
     public function respond_to($method) {
