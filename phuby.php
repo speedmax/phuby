@@ -1,5 +1,5 @@
 <?php
 
-require_once 'lib/mixin.php';
+require_once 'lib/object.php';
 
 ?>

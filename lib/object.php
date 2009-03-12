@@ -1,6 +1,6 @@
 <?php
 
-class Mixin {
+class Object {
     
     protected $mixin_methods = array();
     protected $mixin_parents = array();

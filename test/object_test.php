@@ -29,7 +29,7 @@ class UhOh {
     }
 }
 
-class Testing extends Mixin {
+class Testing extends Object {
     
     public function initialize() {
         $this->mixin('Whoa', 'Dude');
