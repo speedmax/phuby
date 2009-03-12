@@ -3,12 +3,21 @@
 require_once '../phuby.php';
 
 class Whoa {
+    public function super_test($name) {
+        echo "Hello $name\n";
+    }
+    
     public function testing() {
         echo 'cooool';
     }
 }
 
 class Dude {
+    public function super_test($name) {
+        $this->super($name);
+        echo "I like the name $name\n";
+    }
+    
     public function testing2() {
         echo 'totally';
     }
@@ -57,6 +66,9 @@ echo $t->respond_to('protected_method');
 echo "\n";
 
 echo $t->respond_to('invalid');
+echo "\n";
+
+echo $t->super_test('sean');
 echo "\n";
 
 ?>

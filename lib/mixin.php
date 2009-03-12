@@ -57,9 +57,11 @@ class Mixin {
     public function send($method, $arguments = array()) {
         if (!$this->respond_to($method)) {
             trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
-        } else if (isset($this->mixin_methods[$method])) {
-            $method_call = $this->build_method_call($method, $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1], $arguments);
-            return eval($method_call);
+        } else if (isset($this->mixin_methods[$method]) && !empty($this->mixin_methods[$method])) {
+            $object = array_pop($this->mixin_methods[$method]);
+            $result = eval($this->build_method_call($method, $object, $arguments));
+            $this->mixin_methods[$method][] = $object;
+            return $result;
         } else {
             return call_user_func_array(array($this, $method), $arguments);
         }
@@ -67,7 +69,8 @@ class Mixin {
     
     public function super($arguments = null) {
         $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
-        echo $caller['function'];
+        $arguments = func_get_args();
+        return $this->send($caller['function'], $arguments);
     }
     
     protected function __call($method, $arguments = array()) {

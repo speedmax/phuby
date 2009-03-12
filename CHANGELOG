@@ -8,6 +8,7 @@
   * Derived classes from Mixin look for a method called initialize to use as their constructors
   * Remove trailing line breaks from some files
   * Add Mixin#build_method_call
+  * Make Mixin#super work
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit
