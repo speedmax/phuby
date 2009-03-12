@@ -11,6 +11,7 @@
   * Add Object#call
   * Object#call accepts a variable number of arguments and merges them with the last array of arguments
   * Remove Callback class - unnecessary
+  * Make build_static_method_call() a global function
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby

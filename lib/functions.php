@@ -51,6 +51,18 @@ function extend($object, $classes) {
     }
 }
 
+function build_static_method_call($method, $class, $arguments = array()) {
+    if (is_object($class)) $class = get_class($class);
+    $method_call = $class.'::'.$method.'(';
+    if (!empty($arguments)) {
+        $method_call .= '$arguments[0]';
+        for ($i = 1; $i < count($arguments); $i++) {
+            $method_call .= ', $arguments['.$i.']';
+        }
+    }
+    return $method_call .= ')';
+}
+
 function get_static_property($class, $property) {
     return eval('return '.$class.'::$'.$property.';');
 }

@@ -51,7 +51,7 @@ class Object {
             trigger_error('Undefined method '.get_class($this).'::'.$method.'()', E_USER_ERROR);
         } else if (isset($this->instance_extended_methods[$method]) && !empty($this->instance_extended_methods[$method])) {
             $object = array_pop($this->instance_extended_methods[$method]);
-            $result = eval($this->build_method_call($method, $object, $arguments));
+            $result = eval(build_static_method_call($method, $object, $arguments).';');
             $this->instance_extended_methods[$method][] = $object;
             return $result;
         } else {
@@ -67,7 +67,7 @@ class Object {
         } else if ($this->respond_to($caller['function'])) {
             return $this->send($caller['function'], $arguments);
         } else {
-            return eval($this->build_method_call($caller['function'], 'parent', $arguments));
+            return eval(build_static_method_call($caller['function'], 'parent', $arguments).';');
         }
     }
     
@@ -93,20 +93,6 @@ class Object {
     
     protected function __unset($key) {
         unset($this->instance_extended_properties[$key]);
-    }
-    
-    protected function build_method_call($method, $class = null, $arguments = array()) {
-        if (is_null($class)) $class = get_class($this);
-        if (is_object($class)) $class = get_class($class);
-        
-        $method_call = $class.'::'.$method.'(';
-        if (!empty($arguments)) {
-            $method_call .= '$arguments[0]';
-            for ($i = 1; $i < count($arguments); $i++) {
-                $method_call .= ', $arguments['.$i.']';
-            }
-        }
-        return $method_call .= ');';
     }
     
 }
