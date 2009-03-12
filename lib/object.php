@@ -72,7 +72,7 @@ class Object {
     }
     
     protected function __call($method, $arguments = array()) {
-        $this->send($method, $arguments);
+        $this->call('send', $method, $arguments);
     }
     
     protected function __get($key) {
