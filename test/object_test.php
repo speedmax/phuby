@@ -75,4 +75,10 @@ echo "\n";
 echo $t->super_test('sean');
 echo "\n";
 
+echo $t->is_a('Testing');
+echo "\n";
+
+echo $t->is_a('Invalid');
+echo "\n";
+
 ?>

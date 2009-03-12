@@ -58,6 +58,10 @@ class Object {
         return $this->extended_properties;
     }
     
+    public function is_a($class) {
+        return is_a($this, $class);
+    }
+    
     public function respond_to($method) {
         return isset($this->extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }

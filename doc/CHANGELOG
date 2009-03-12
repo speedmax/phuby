@@ -2,6 +2,8 @@
   * Update README
   * Move doc/ directory
   * Update doc/TODO
+  * Remove "look into ReflectionMethod" from doc/TODO (wont work)
+  * Add Object#is_a
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby
