@@ -13,7 +13,7 @@ rubyisms in php
 INCOMPLETE
 
 * `extend($class_or_object, $classes)`                 - Injects the methods/properties of each member of `$classes` into `$class_or_object`
-* `build_static_method_call($class, $method, $arguments = array())` - Returns a string representing a method call that can be eval'd
+* `build_static_method_call($class, $method, $arguments = array(), $variable_name = 'arguments')` - Returns a string representing a method call that can be eval'd
 * `get_static_property($class, $property)`             - Returns the static `$property` of `$class`
 * `set_static_property($class, $property, $value)`     - Sets the static `$property` of `$class` to `$value`
 * `Object#call($method, $array_of_args)`               - Calls `$method` which each member of `$array_of_args` as an argument (like ruby's splat `*` operator)

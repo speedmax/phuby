@@ -54,13 +54,13 @@ function extend($object, $classes) {
     }
 }
 
-function build_static_method_call($class, $method, $arguments = array()) {
+function build_static_method_call($class, $method, $arguments = array(), $variable_name = 'arguments') {
     if (is_object($class)) $class = get_class($class);
     $method_call = $class.'::'.$method.'(';
     if (!empty($arguments)) {
-        $method_call .= '$arguments[0]';
+        $method_call .= '$'.$variable_name.'[0]';
         for ($i = 1; $i < count($arguments); $i++) {
-            $method_call .= ', $arguments['.$i.']';
+            $method_call .= ', $'.$variable_name.'['.$i.']';
         }
     }
     return $method_call .= ')';
