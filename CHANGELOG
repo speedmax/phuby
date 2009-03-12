@@ -9,6 +9,7 @@
   * Remove trailing line breaks from some files
   * Add Mixin#build_method_call
   * Make Mixin#super work
+  * Mixin#super also checks for a real defined method in parent
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit

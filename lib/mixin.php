@@ -70,7 +70,11 @@ class Mixin {
     public function super($arguments = null) {
         $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
         $arguments = func_get_args();
-        return $this->send($caller['function'], $arguments);
+        if ($this->respond_to($caller['function'])) {
+            return $this->send($caller['function'], $arguments);
+        } else {
+            return eval($this->build_method_call($caller['function'], 'parent', $arguments));
+        }
     }
     
     protected function __call($method, $arguments = array()) {
