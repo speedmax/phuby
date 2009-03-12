@@ -111,6 +111,4 @@ class Object {
     
 }
 
-extend('Object', 'Callback');
-
 ?>

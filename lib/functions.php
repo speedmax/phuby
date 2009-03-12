@@ -26,7 +26,6 @@ function extend($object, $classes) {
                 }
                 
                 $object->instance_extended_parents[] = $class_name;
-                // if (in_array('extended', $methods)) eval($object->build_method_call('extended', $class_name));
             }
         } else {
             if (!in_array($class_name, get_static_property($object, 'extended_parents'))) {
@@ -47,7 +46,6 @@ function extend($object, $classes) {
                 set_static_property($object, 'extended_properties', $extended_properties);
                 
                 set_static_property($object, 'extended_parents', array_merge(get_static_property($object, 'extended_parents'), array($class_name)));
-                // if (in_array('extended', $methods)) eval($this->build_method_call('extended', $class_name));
             }
         }
     }
