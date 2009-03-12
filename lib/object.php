@@ -28,18 +28,6 @@ class Object {
         call_user_func_array('extend', array_merge(array($this), $args));
     }
     
-    public function instance_extended_methods() {
-        return $this->instance_extended_methods;
-    }
-    
-    public function instance_extended_parents() {
-        return $this->instance_extended_parents;
-    }
-    
-    public function instance_extended_properties() {
-        return $this->instance_extended_properties;
-    }
-    
     public function is_a($class) {
         return $this instanceof $class;
     }
