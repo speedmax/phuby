@@ -15,8 +15,9 @@ class Whoa {
 class Dude {
     public $test_property = 'cool';
     
-    public function extended() {
-        echo get_class($this).' extended Dude'."\n";
+    public static function extended($object) {
+        if (is_object($object)) $object = get_class($object);
+        echo $object.' extended Dude'."\n";
     }
     
     public function super_test($name) {
@@ -83,7 +84,7 @@ echo "\n";
 echo $t->is_a('Invalid');
 echo "\n";
 
-print_r($t);
+// print_r($t);
 
 $t->super();
 

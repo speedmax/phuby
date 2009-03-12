@@ -48,10 +48,13 @@ function extend($object, $classes) {
                 set_static_property($object, 'extended_parents', array_merge(get_static_property($object, 'extended_parents'), array($class_name)));
             }
         }
+
+        $arguments = array($object);
+        if (method_exists($class_name, 'extended')) eval(build_static_method_call($class_name, 'extended', $arguments).';');
     }
 }
 
-function build_static_method_call($method, $class, $arguments = array()) {
+function build_static_method_call($class, $method, $arguments = array()) {
     if (is_object($class)) $class = get_class($class);
     $method_call = $class.'::'.$method.'(';
     if (!empty($arguments)) {

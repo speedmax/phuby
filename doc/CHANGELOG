@@ -14,6 +14,7 @@
   * Make build_static_method_call() a global function
   * Object#__call now calls Object#call instead of Object#send so it can splat the arguments
   * Object#super now calls Object#call instead of Object#send so it can splat the arguments
+  * Fix the extended callback
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby

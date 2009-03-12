@@ -5,9 +5,9 @@ class Object {
     public static $extended_methods = array();
     public static $extended_parents = array();
     public static $extended_properties = array();
-    public $instance_extended_methods = array();
-    public $instance_extended_parents = array();
-    public $instance_extended_properties = array();
+    public $instance_extended_methods;
+    public $instance_extended_parents;
+    public $instance_extended_properties;
     
     public function __construct($arguments = null) {
         $this->instance_extended_methods = self::$extended_methods;
@@ -51,7 +51,7 @@ class Object {
             trigger_error('Undefined method '.get_class($this).'::'.$method.'()', E_USER_ERROR);
         } else if (isset($this->instance_extended_methods[$method]) && !empty($this->instance_extended_methods[$method])) {
             $object = array_pop($this->instance_extended_methods[$method]);
-            $result = eval(build_static_method_call($method, $object, $arguments).';');
+            $result = eval(build_static_method_call($object, $method, $arguments).';');
             $this->instance_extended_methods[$method][] = $object;
             return $result;
         } else {
@@ -67,7 +67,7 @@ class Object {
         } else if ($this->respond_to($caller['function'])) {
             return $this->call('send', $caller['function'], $arguments);
         } else {
-            return eval(build_static_method_call($caller['function'], 'parent', $arguments).';');
+            return eval(build_static_method_call('parent', $caller['function'], $arguments).';');
         }
     }
     
