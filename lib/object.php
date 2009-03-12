@@ -2,9 +2,9 @@
 
 class Object {
     
-    protected $mixin_methods = array();
-    protected $mixin_parents = array();
-    protected $mixin_properties = array();
+    protected $included_methods = array();
+    protected $included_parents = array();
+    protected $included_properties = array();
     
     public function __construct($arguments = null) {
         if ($this->respond_to('initialize')) {
@@ -28,43 +28,43 @@ class Object {
             // Mixin methods
             $methods = get_class_methods($class_name);
             foreach ($methods as $method) {
-                if (!isset($this->mixin_methods[$method])) $this->mixin_methods[$method] = array();
-                $this->mixin_methods[$method][] = $class_name;
+                if (!isset($this->included_methods[$method])) $this->included_methods[$method] = array();
+                $this->included_methods[$method][] = $class_name;
             }
             
             // Mixin properties
             $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
             foreach ($properties as $key => $value) {
-                $this->mixin_properties[$key] = $value;
+                $this->included_properties[$key] = $value;
             }
             
-            if (!in_array($class_name, $this->mixin_parents)) $this->mixin_parents[] = $class_name;
+            if (!in_array($class_name, $this->included_parents)) $this->included_parents[] = $class_name;
         }
     }
     
-    public function mixin_methods() {
-        return $this->mixin_methods;
+    public function included_methods() {
+        return $this->included_methods;
     }
     
-    public function mixin_parents() {
-        return $this->mixin_parents;
+    public function included_parents() {
+        return $this->included_parents;
     }
     
-    public function mixin_properties() {
-        return $this->mixin_properties;
+    public function included_properties() {
+        return $this->included_properties;
     }
     
     public function respond_to($method) {
-        return isset($this->mixin_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
+        return isset($this->included_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }
     
     public function send($method, $arguments = array()) {
         if (!$this->respond_to($method)) {
             trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
-        } else if (isset($this->mixin_methods[$method]) && !empty($this->mixin_methods[$method])) {
-            $object = array_pop($this->mixin_methods[$method]);
+        } else if (isset($this->included_methods[$method]) && !empty($this->included_methods[$method])) {
+            $object = array_pop($this->included_methods[$method]);
             $result = eval($this->build_method_call($method, $object, $arguments));
-            $this->mixin_methods[$method][] = $object;
+            $this->included_methods[$method][] = $object;
             return $result;
         } else {
             return call_user_func_array(array($this, $method), $arguments);
@@ -86,23 +86,23 @@ class Object {
     }
     
     protected function __get($key) {
-        if (isset($this->mixin_properties[$key])) {
-            return $this->mixin_properties[$key];
+        if (isset($this->included_properties[$key])) {
+            return $this->included_properties[$key];
         } else {
             trigger_error('Undefined property $'.$key, E_USER_ERROR);
         }
     }
     
     protected function __isset($key) {
-        return isset($this->mixin_properties[$key]);
+        return isset($this->included_properties[$key]);
     }
     
     protected function __set($key, $value) {
-        $this->mixin_properties[$key] = $value;
+        $this->included_properties[$key] = $value;
     }
     
     protected function __unset($key) {
-        unset($this->mixin_properties[$key]);
+        unset($this->included_properties[$key]);
     }
     
     protected function build_method_call($method, $class = null, $arguments = array()) {
