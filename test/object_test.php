@@ -13,6 +13,8 @@ class Whoa {
 }
 
 class Dude {
+    public $test_property = 'cool';
+    
     public function extended() {
         echo get_class($this).' extended Dude'."\n";
     }
@@ -81,7 +83,7 @@ echo "\n";
 echo $t->is_a('Invalid');
 echo "\n";
 
-// print_r($t);
+print_r($t);
 
 $t->super();
 

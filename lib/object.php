@@ -65,7 +65,7 @@ class Object {
         if (empty($caller)) {
             trigger_error(get_class($this).'::super() must be called from inside of an instance method', E_USER_ERROR);
         } else if ($this->respond_to($caller['function'])) {
-            return $this->send($caller['function'], $arguments);
+            return $this->call('send', $caller['function'], $arguments);
         } else {
             return eval(build_static_method_call($caller['function'], 'parent', $arguments).';');
         }
