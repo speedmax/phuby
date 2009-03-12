@@ -25,13 +25,13 @@ class Object {
     
     public function call($method, $arguments) {
         $args = func_get_args();
-        $method = array_shift($args);
-        $arguments = array_pop($args);
-        if (!is_array($arguments)) trigger_error('The last argument passed to '.get_class($this).'::call() must be an array', E_USER_ERROR);
-        return call_user_func_array(array($this, $method), array_merge($args, $arguments));
+        $arguments = $this->extract_call_arguments($args);
+        return call_user_func_array(array($this, $method), $arguments);
     }
     
-    public function call_extended_method($method, $arguments = array()) {
+    public function call_extended_method($method, $arguments) {
+        $args = func_get_args();
+        $arguments = $this->extract_call_arguments($args);
         $object = array_pop($this->instance_extended_methods[$method]);
         eval('$result = '.build_static_method_call($object, $method, $arguments).';');
         $this->instance_extended_methods[$method][] = $object;
@@ -41,6 +41,13 @@ class Object {
     public function extend($arguments) {
         $arguments = func_get_args();
         call_user_func_array('extend', array_merge(array($this), $arguments));
+    }
+    
+    public function extract_call_arguments($args) {
+        array_shift($args);
+        $arguments = array_pop($args);
+        if (!is_array($arguments)) trigger_error('The last argument must be an array', E_USER_ERROR);
+        return array_merge($args, $arguments);
     }
     
     public function is_a($class) {
