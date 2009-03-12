@@ -41,7 +41,7 @@ class UhOh {
 class Testing extends Object {
     
     public function initialize() {
-        $this->extend('Whoa', 'Dude');
+        extend($this, 'Whoa', 'Dude');
     }
     
     public function real_method() {

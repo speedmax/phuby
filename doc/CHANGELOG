@@ -18,6 +18,7 @@
   * build_static_method_call() accepts an optional $variable_name argument
   * Add Object#call_extended_method and fix methods with missing returns
   * Add Object#extract_call_arguments($args) and update call methods
+  * Remove Object#extend - just use extend($this, 'Class1', 'Class2')
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby

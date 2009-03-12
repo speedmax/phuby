@@ -38,11 +38,6 @@ class Object {
         return $result;
     }
     
-    public function extend($arguments) {
-        $arguments = func_get_args();
-        call_user_func_array('extend', array_merge(array($this), $arguments));
-    }
-    
     public function extract_call_arguments($args) {
         array_shift($args);
         $arguments = array_pop($args);
