@@ -15,7 +15,7 @@ class Object {
         $this->instance_extended_properties = self::$extended_properties;
         if ($this->respond_to('initialize')) {
             $arguments = func_get_args();
-            $this->call('send', array_merge(array('initialize', $arguments)));
+            $this->call('send', 'initialize', $arguments);
         }
     }
     
@@ -23,8 +23,12 @@ class Object {
         if ($this->respond_to('finalize')) $this->send('finalize');
     }
     
-    public function call($method, $arguments = array()) {
-        call_user_func_array(array($this, $method), $arguments);
+    public function call($method, $arguments) {
+        $args = func_get_args();
+        $method = array_shift($args);
+        $arguments = array_pop($args);
+        if (!is_array($arguments)) trigger_error('The last argument passed to '.get_class($this).'::call() must be an array', E_USER_ERROR);
+        call_user_func_array(array($this, $method), array_merge($args, $arguments));
     }
     
     public function extend($arguments) {
@@ -44,7 +48,7 @@ class Object {
         $arguments = func_get_args();
         $method = array_shift($arguments);
         if (!$this->respond_to($method)) {
-            trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
+            trigger_error('Undefined method '.get_class($this).'::'.$method.'()', E_USER_ERROR);
         } else if (isset($this->instance_extended_methods[$method]) && !empty($this->instance_extended_methods[$method])) {
             $object = array_pop($this->instance_extended_methods[$method]);
             $result = eval($this->build_method_call($method, $object, $arguments));
