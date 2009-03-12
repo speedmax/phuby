@@ -14,7 +14,7 @@ function extend($object, $classes) {
             if (!in_array($class_name, $object->instance_extended_parents)) {
                 // Mixin methods
                 $methods = get_class_methods($class_name);
-                foreach ($methods as $method) {                
+                foreach ($methods as $method) {
                     if (!isset($object->instance_extended_methods[$method])) $object->instance_extended_methods[$method] = array();
                     $object->instance_extended_methods[$method][] = $class_name;
                 }

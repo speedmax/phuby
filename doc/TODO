@@ -1,6 +1,5 @@
 * alias_method and alias_method_chain
 * refactor the global extend method
 * fix extended callback
-* trigger error if super is not called within another method
 * look into __callStatic for extending static methods
 * Add real tests

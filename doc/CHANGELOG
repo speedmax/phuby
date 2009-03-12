@@ -6,6 +6,7 @@
   * Add Object#is_a
   * Object#is_a now uses the instanceof operator
   * Add global extend method
+  * Object#super must be called from inside of an instance method
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby

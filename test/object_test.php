@@ -83,6 +83,6 @@ echo "\n";
 
 // print_r($t);
 
-// $t->super();
+$t->super();
 
 ?>
