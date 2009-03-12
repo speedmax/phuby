@@ -58,14 +58,7 @@ class Mixin {
         if (!$this->respond_to($method)) {
             trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
         } else if (isset($this->mixin_methods[$method])) {
-            $method_call = $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1].'::'.$method.'(';
-            if (count($arguments)) {
-                $method_call .= '$arguments[0]';
-                for ($i = 1; $i < count($arguments); $i++) {
-                    $method_call .= ', $arguments['.$i.']';
-                }
-            }
-            $method_call .= ');';
+            $method_call = $this->build_method_call($method, $this->mixin_methods[$method][count($this->mixin_methods[$method]) - 1], $arguments);
             return eval($method_call);
         } else {
             return call_user_func_array(array($this, $method), $arguments);
@@ -99,6 +92,20 @@ class Mixin {
     
     protected function __unset($key) {
         unset($this->mixin_properties[$key]);
+    }
+    
+    protected function build_method_call($method, $class = null, $arguments = array()) {
+        if (is_null($class)) $class = get_class($this);
+        if (is_object($class)) $class = get_class($class);
+        
+        $method_call = $class.'::'.$method.'(';
+        if (!empty($arguments)) {
+            $method_call .= '$arguments[0]';
+            for ($i = 1; $i < count($arguments); $i++) {
+                $method_call .= ', $arguments['.$i.']';
+            }
+        }
+        return $method_call .= ');';
     }
     
 }
