@@ -2,6 +2,8 @@
 
 rubyisms in php
 
+(pronounced foo-bee)
+
 
 ## Installation
 
