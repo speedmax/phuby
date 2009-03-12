@@ -13,6 +13,10 @@ class Object {
         }
     }
     
+    public function __destruct() {
+        if ($this->respond_to('finalize')) $this->send('finalize');
+    }
+    
     public function mixin($args) {
         $classes = array();
         foreach (func_get_args() as $arg) $classes = array_merge($classes, ((is_array($arg) ? $arg : array($arg))));

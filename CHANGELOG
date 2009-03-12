@@ -11,6 +11,7 @@
   * Make Mixin#super work
   * Mixin#super also checks for a real defined method in parent
   * Rename Mixin to Object
+  * Derived classes from Object look for a method called finalize to use as their destructors
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit
