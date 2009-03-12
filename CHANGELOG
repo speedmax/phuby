@@ -13,6 +13,7 @@
   * Rename Mixin to Object
   * Derived classes from Object look for a method called finalize to use as their destructors
   * Rename Object#mixin_* to Object#included_*
+  * Update README
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit
