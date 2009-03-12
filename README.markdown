@@ -16,7 +16,7 @@ INCOMPLETE
 * `build_static_method_call($method, $class, $arguments = array())` - Returns a string representing a method call that can be eval'd
 * `get_static_property($class, $property)`             - Returns the static `$property` of `$class`
 * `set_static_property($class, $property, $value)`     - Sets the static `$property` of `$class` to `$value`
-* `Object#call($method, $array_of_args)`               - Calls `$method` which each member of `$array_of_args` as an argument
+* `Object#call($method, $array_of_args)`               - Calls `$method` which each member of `$array_of_args` as an argument (like ruby's splat `*` operator)
 * `Object#extend($classes_or_objects)`                 - Accepts a list of classes or objects to mixin to the current class
 * `Object#extended()`                                  - Called after an object extends the current class
 * `Object#initialize($optional_args)`                  - Replaces `Object#__construct` (so that it works with `super`)
