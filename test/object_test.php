@@ -81,4 +81,8 @@ echo "\n";
 echo $t->is_a('Invalid');
 echo "\n";
 
+// print_r($t);
+
+// $t->super();
+
 ?>

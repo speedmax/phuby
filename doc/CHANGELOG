@@ -5,6 +5,7 @@
   * Remove "look into ReflectionMethod" from doc/TODO (wont work)
   * Add Object#is_a
   * Object#is_a now uses the instanceof operator
+  * Add global extend method
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby
