@@ -2,9 +2,9 @@
 
 class Object {
     
-    protected $included_methods = array();
-    protected $included_parents = array();
-    protected $included_properties = array();
+    protected $extended_methods = array();
+    protected $extended_parents = array();
+    protected $extended_properties = array();
     
     public function __construct($arguments = null) {
         if ($this->respond_to('initialize')) {
@@ -28,43 +28,43 @@ class Object {
             // Mixin methods
             $methods = get_class_methods($class_name);
             foreach ($methods as $method) {
-                if (!isset($this->included_methods[$method])) $this->included_methods[$method] = array();
-                $this->included_methods[$method][] = $class_name;
+                if (!isset($this->extended_methods[$method])) $this->extended_methods[$method] = array();
+                $this->extended_methods[$method][] = $class_name;
             }
             
             // Mixin properties
             $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
             foreach ($properties as $key => $value) {
-                $this->included_properties[$key] = $value;
+                $this->extended_properties[$key] = $value;
             }
             
-            if (!in_array($class_name, $this->included_parents)) $this->included_parents[] = $class_name;
+            if (!in_array($class_name, $this->extended_parents)) $this->extended_parents[] = $class_name;
         }
     }
     
-    public function included_methods() {
-        return $this->included_methods;
+    public function extended_methods() {
+        return $this->extended_methods;
     }
     
-    public function included_parents() {
-        return $this->included_parents;
+    public function extended_parents() {
+        return $this->extended_parents;
     }
     
-    public function included_properties() {
-        return $this->included_properties;
+    public function extended_properties() {
+        return $this->extended_properties;
     }
     
     public function respond_to($method) {
-        return isset($this->included_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
+        return isset($this->extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }
     
     public function send($method, $arguments = array()) {
         if (!$this->respond_to($method)) {
             trigger_error('Undefined method '.get_class($this).'::'.$method, E_USER_ERROR);
-        } else if (isset($this->included_methods[$method]) && !empty($this->included_methods[$method])) {
-            $object = array_pop($this->included_methods[$method]);
+        } else if (isset($this->extended_methods[$method]) && !empty($this->extended_methods[$method])) {
+            $object = array_pop($this->extended_methods[$method]);
             $result = eval($this->build_method_call($method, $object, $arguments));
-            $this->included_methods[$method][] = $object;
+            $this->extended_methods[$method][] = $object;
             return $result;
         } else {
             return call_user_func_array(array($this, $method), $arguments);
@@ -86,23 +86,23 @@ class Object {
     }
     
     protected function __get($key) {
-        if (isset($this->included_properties[$key])) {
-            return $this->included_properties[$key];
+        if (isset($this->extended_properties[$key])) {
+            return $this->extended_properties[$key];
         } else {
             trigger_error('Undefined property $'.$key, E_USER_ERROR);
         }
     }
     
     protected function __isset($key) {
-        return isset($this->included_properties[$key]);
+        return isset($this->extended_properties[$key]);
     }
     
     protected function __set($key, $value) {
-        $this->included_properties[$key] = $value;
+        $this->extended_properties[$key] = $value;
     }
     
     protected function __unset($key) {
-        unset($this->included_properties[$key]);
+        unset($this->extended_properties[$key]);
     }
     
     protected function build_method_call($method, $class = null, $arguments = array()) {
