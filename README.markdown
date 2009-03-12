@@ -8,9 +8,15 @@ rubyisms in php
 	git clone git://github.com/shuber/phuby.git
 
 
-## Examples
+## Features
 
-Coming soon...
+* `Object#extend`     - description
+* `Object#extended`   - description
+* `Object#initialize` - description
+* `Object#finalize`   - description
+* `Object#respond_to` - description
+* `Object#send`       - description
+* `Object#super`      - description
 
 
 ## Contact
