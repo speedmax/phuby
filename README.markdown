@@ -21,6 +21,19 @@ INCOMPLETE
 * `Object#super`                                       - Calls the method that the current method overwrote (must be called inside of a method)
 
 
+## Usage
+
+	require_once 'phuby/phuby.php';
+
+Make sure your classes extend `Object`
+
+	class User extends Object {
+	    # ...
+	}
+
+More coming soon...
+
+
 ## Contact
 
 Problems, comments, and suggestions all welcome: [shuber@huberry.com](mailto:shuber@huberry.com)
