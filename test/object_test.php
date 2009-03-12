@@ -5,6 +5,7 @@ require_once '../phuby.php';
 class Whoa {
     public function super_test($name) {
         echo "Hello $name\n";
+        return 'returned from super';
     }
     
     public function testing() {
@@ -21,12 +22,13 @@ class Dude {
     }
     
     public function super_test($name) {
-        $this->super($name);
         echo "I like the name $name\n";
+        return $this->super($name);
     }
     
     public function testing2() {
         echo 'totally';
+        return 'this is a returned value';
     }
 }
 
@@ -58,6 +60,9 @@ $t->testing();
 echo "\n";
 
 $t->testing2();
+echo "\n";
+
+echo $t->testing2();
 echo "\n";
 
 $t->send('testing');

@@ -17,7 +17,8 @@ INCOMPLETE
 * `get_static_property($class, $property)`             - Returns the static `$property` of `$class`
 * `set_static_property($class, $property, $value)`     - Sets the static `$property` of `$class` to `$value`
 * `Object::extended($class_or_object)`                 - Called after an object extends the current class
-* `Object#call($method, $array_of_args)`               - Calls `$method` which each member of `$array_of_args` as an argument (like ruby's splat `*` operator)
+* `Object#call($method, $array_of_args)`               - Calls `$method` with each member of `$array_of_args` as an argument (like ruby's splat `*` operator)
+* `Object#call_extended_method($method, $array_of_args)` - Calls the extended `$method` with each member of `$array_of_args` as an argument
 * `Object#extend($classes_or_objects)`                 - Accepts a list of classes or objects to mixin to the current class
 * `Object#initialize($optional_args)`                  - Replaces `Object#__construct` (so that it works with `super`)
 * `Object#is_a($class_name)`                           - Checks if the current object or one of its parents is a `$class_name`

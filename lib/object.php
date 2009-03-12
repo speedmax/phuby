@@ -28,7 +28,14 @@ class Object {
         $method = array_shift($args);
         $arguments = array_pop($args);
         if (!is_array($arguments)) trigger_error('The last argument passed to '.get_class($this).'::call() must be an array', E_USER_ERROR);
-        call_user_func_array(array($this, $method), array_merge($args, $arguments));
+        return call_user_func_array(array($this, $method), array_merge($args, $arguments));
+    }
+    
+    public function call_extended_method($method, $arguments = array()) {
+        $object = array_pop($this->instance_extended_methods[$method]);
+        eval('$result = '.build_static_method_call($object, $method, $arguments).';');
+        $this->instance_extended_methods[$method][] = $object;
+        return $result;
     }
     
     public function extend($arguments) {
@@ -50,10 +57,7 @@ class Object {
         if (!$this->respond_to($method)) {
             trigger_error('Undefined method '.get_class($this).'::'.$method.'()', E_USER_ERROR);
         } else if (isset($this->instance_extended_methods[$method]) && !empty($this->instance_extended_methods[$method])) {
-            $object = array_pop($this->instance_extended_methods[$method]);
-            $result = eval(build_static_method_call($object, $method, $arguments).';');
-            $this->instance_extended_methods[$method][] = $object;
-            return $result;
+            return $this->call_extended_method($method, $arguments);
         } else {
             return $this->call($method, $arguments);
         }
@@ -67,12 +71,12 @@ class Object {
         } else if ($this->respond_to($caller['function'])) {
             return $this->call('send', $caller['function'], $arguments);
         } else {
-            return eval(build_static_method_call('parent', $caller['function'], $arguments).';');
+            eval('return '.build_static_method_call('parent', $caller['function'], $arguments).';');
         }
     }
     
     protected function __call($method, $arguments = array()) {
-        $this->call('send', $method, $arguments);
+        return $this->call('send', $method, $arguments);
     }
     
     protected function __get($key) {

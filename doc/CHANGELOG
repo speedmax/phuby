@@ -16,6 +16,7 @@
   * Object#super now calls Object#call instead of Object#send so it can splat the arguments
   * Fix the extended callback
   * build_static_method_call() accepts an optional $variable_name argument
+  * Add Object#call_extended_method and fix methods with missing returns
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby
