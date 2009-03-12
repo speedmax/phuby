@@ -12,6 +12,7 @@ INCOMPLETE
 
 ## Features
 
+
 * `Object#extend($classes_or_objects)`                 - Accepts a list of classes or objects to mixin to the current class
 * `Object#extended()`                                  - Called after an object extends the current class
 * `Object#initialize($optional_args)`                  - Replaces `Object#__construct` (so that it works with `super`)
