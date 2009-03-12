@@ -2,8 +2,6 @@
 
 rubyisms in php
 
-INCOMPLETE
-
 
 ## Installation
 
@@ -12,6 +10,7 @@ INCOMPLETE
 
 ## Features
 
+INCOMPLETE
 
 * `Object#extend($classes_or_objects)`                 - Accepts a list of classes or objects to mixin to the current class
 * `Object#extended()`                                  - Called after an object extends the current class
