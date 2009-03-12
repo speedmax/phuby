@@ -1,0 +1,4 @@
+* alias_method and alias_method_chain
+* make global function "extend"
+* make Object#extended_* methods static so that extending classes only happens once instead of on instantiation
+* look into __callStatic for extending static methods
