@@ -8,6 +8,7 @@
   * Add global extend method
   * Object#super must be called from inside of an instance method
   * Remove Object#instance_extended_* methods
+  * Add Object#call
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby

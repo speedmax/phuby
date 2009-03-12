@@ -3,7 +3,7 @@
 function extend($object, $classes) {
     if (!is_array($classes)) {
         $classes = func_get_args();
-        array_shift($classes);
+        $object = array_shift($classes);
     }
     
     foreach (array_unique($classes) as $class) {
