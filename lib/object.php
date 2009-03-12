@@ -17,7 +17,7 @@ class Object {
         if ($this->respond_to('finalize')) $this->send('finalize');
     }
     
-    public function mixin($args) {
+    public function extend($args) {
         $classes = array();
         foreach (func_get_args() as $arg) $classes = array_merge($classes, ((is_array($arg) ? $arg : array($arg))));
         
@@ -27,7 +27,7 @@ class Object {
             
             // Mixin methods
             $methods = get_class_methods($class_name);
-            foreach ($methods as $method) {
+            foreach ($methods as $method) {                
                 if (!isset($this->extended_methods[$method])) $this->extended_methods[$method] = array();
                 $this->extended_methods[$method][] = $class_name;
             }

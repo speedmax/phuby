@@ -32,7 +32,7 @@ class UhOh {
 class Testing extends Object {
     
     public function initialize() {
-        $this->mixin('Whoa', 'Dude');
+        $this->extend('Whoa', 'Dude');
     }
     
     public function real_method() {

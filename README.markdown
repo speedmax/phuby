@@ -2,8 +2,6 @@
 
 rubyisms in php
 
-Requires php >= 5.3.0
-
 
 ## Installation
 

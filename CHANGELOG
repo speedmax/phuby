@@ -15,6 +15,7 @@
   * Rename Object#mixin_* to Object#included_*
   * Update README
   * Rename Object#included_* to Object#extended_*
+  * Rename Object#mixin to Object#extend
 
 2009-03-10 - Sean Huber (shuber@huberry.com)
   * Initial commit
