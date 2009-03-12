@@ -38,13 +38,6 @@ class Object {
         return $result;
     }
     
-    public function extract_call_arguments($args) {
-        array_shift($args);
-        $arguments = array_pop($args);
-        if (!is_array($arguments)) trigger_error('The last argument must be an array', E_USER_ERROR);
-        return array_merge($args, $arguments);
-    }
-    
     public function is_a($class) {
         return $this instanceof $class;
     }
@@ -99,6 +92,13 @@ class Object {
     
     protected function __unset($key) {
         unset($this->instance_extended_properties[$key]);
+    }
+    
+    protected function extract_call_arguments($args) {
+        array_shift($args);
+        $arguments = array_pop($args);
+        if (!is_array($arguments)) trigger_error('The last argument in '.get_class($this).'::extract_call_arguments() must be an array', E_USER_ERROR);
+        return array_merge($args, $arguments);
     }
     
 }
