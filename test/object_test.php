@@ -13,6 +13,10 @@ class Whoa {
 }
 
 class Dude {
+    public function extended() {
+        echo get_class($this).' extended Dude'."\n";
+    }
+    
     public function super_test($name) {
         $this->super($name);
         echo "I like the name $name\n";

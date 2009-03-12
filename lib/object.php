@@ -7,6 +7,7 @@ class Object {
     protected $extended_properties = array();
     
     public function __construct($arguments = null) {
+        $this->extend('Callback');
         if ($this->respond_to('initialize')) {
             $arguments = func_get_args();
             $this->send('initialize', $arguments);
@@ -24,21 +25,24 @@ class Object {
         foreach (array_unique($classes) as $class) {
             $class_name = (is_object($class)) ? get_class($class) : $class;
             if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
+                
+            if (!in_array($class_name, $this->extended_parents)) {
+                // Mixin methods
+                $methods = get_class_methods($class_name);
+                foreach ($methods as $method) {                
+                    if (!isset($this->extended_methods[$method])) $this->extended_methods[$method] = array();
+                    $this->extended_methods[$method][] = $class_name;
+                }
             
-            // Mixin methods
-            $methods = get_class_methods($class_name);
-            foreach ($methods as $method) {                
-                if (!isset($this->extended_methods[$method])) $this->extended_methods[$method] = array();
-                $this->extended_methods[$method][] = $class_name;
+                // Mixin properties
+                $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
+                foreach ($properties as $key => $value) {
+                    $this->extended_properties[$key] = $value;
+                }
+                
+                $this->extended_parents[] = $class_name;
+                if (in_array('extended', $methods)) eval($this->build_method_call('extended', $class_name));
             }
-            
-            // Mixin properties
-            $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
-            foreach ($properties as $key => $value) {
-                $this->extended_properties[$key] = $value;
-            }
-            
-            if (!in_array($class_name, $this->extended_parents)) $this->extended_parents[] = $class_name;
         }
     }
     
