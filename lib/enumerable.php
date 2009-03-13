@@ -89,6 +89,15 @@ class EnumerableMethods {
         return true;
     }
     
+    public function partition($block) {
+        $passed = new Enumerable;
+        $failed = new Enumerable;
+        foreach ($this as $key => $value) {
+            eval('if ('.$block.') { $passed[] = $value; } else { $failed[] = $value; }');
+        }
+        return new Enumerable(array($passed, $failed));
+    }
+    
     public function reject($block) {
         $result = new Enumerable;
         foreach ($this as $key => $value) {
