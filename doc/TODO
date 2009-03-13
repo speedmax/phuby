@@ -1,4 +1,3 @@
 * alias_method and alias_method_chain
-* refactor the global extend method
 * look into __callStatic for extending static methods
 * Add real tests

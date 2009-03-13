@@ -10,47 +10,42 @@ function extend($object, $classes) {
         $class_name = (is_object($class)) ? get_class($class) : $class;
         if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
         
+        $methods = get_class_methods($class_name);
+        foreach ($methods as $method) extend_method($object, $class, $method);
+        
+        $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
+        foreach ($properties as $property => $value) extend_property($object, $property, $value);
+        
         if (is_object($object)) {
-            if (!in_array($class_name, $object->instance_extended_parents)) {
-                // Mixin methods
-                $methods = get_class_methods($class_name);
-                foreach ($methods as $method) {
-                    if (!isset($object->instance_extended_methods[$method])) $object->instance_extended_methods[$method] = array();
-                    $object->instance_extended_methods[$method][] = $class_name;
-                }
-                
-                // Mixin properties
-                $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
-                foreach ($properties as $key => $value) {
-                    $object->instance_extended_properties[$key] = $value;
-                }
-                
-                $object->instance_extended_parents[] = $class_name;
-            }
+            $object->instance_extended_parents[] = $class_name;
         } else {
-            if (!in_array($class_name, get_static_property($object, 'extended_parents'))) {
-                // Mixin methods
-                foreach (get_class_methods($class_name) as $method) {
-                    $extended_methods = get_static_property($object, 'extended_methods');
-                    if (!isset($extended_methods[$method])) $extended_methods[$method] = array();
-                    $extended_methods[$method][] = $class_name;
-                    set_static_property($object, 'extended_methods', $extended_methods);
-                }
-                
-                // Mixin properties
-                $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
-                $extended_properties = get_static_property($object, 'extended_properties');
-                foreach ($properties as $key => $value) {
-                    $extended_properties[$key] = $value;
-                }
-                set_static_property($object, 'extended_properties', $extended_properties);
-                
-                set_static_property($object, 'extended_parents', array_merge(get_static_property($object, 'extended_parents'), array($class_name)));
-            }
+            set_static_property($object, 'extended_parents', array_merge(get_static_property($object, 'extended_parents'), array($class_name)));
         }
-
+        
         $arguments = array($object);
         if (method_exists($class_name, 'extended')) eval(build_static_method_call($class_name, 'extended', $arguments).';');
+    }
+}
+
+function extend_method($object, $class, $method) {
+    $class_name = (is_object($class)) ? get_class($class) : $class;
+    if (is_object($object)) {
+        if (!isset($object->instance_extended_methods[$method])) $object->instance_extended_methods[$method] = array();
+        $object->instance_extended_methods[$method][] = $class_name;
+    } else {
+        $extended_methods = get_static_property($object, 'extended_methods');
+        if (!isset($extended_methods[$method])) $extended_methods[$method] = array();
+        $extended_methods[$method][] = $class_name;
+        set_static_property($object, 'extended_methods', $extended_methods);
+    }
+}
+
+function extend_property($object, $property, $value) {
+    if (is_object($object)) {
+        $object->instance_extended_properties[$property] = $value;
+    } else {
+        $class_name = (is_object($object)) ? get_class($object) : $object;
+        set_static_property($class_name, 'extended_properties', array_merge(get_static_property($class_name, 'extended_properties'), array($property => $value)));
     }
 }
 

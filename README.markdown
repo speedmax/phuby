@@ -15,6 +15,8 @@ rubyisms in php
 INCOMPLETE
 
 * `extend($class_or_object, $classes)`                 - Injects the methods/properties of each member of `$classes` into `$class_or_object`
+* `extend_method($class_or_object, $class_or_object_to_extend, $method)` - Injects `$method` from `$class_or_object_to_extend` into `$class_or_object`
+* `extend_property($class_or_object, $property, $value)` - Sets `$property` to `$value` in `$class_or_object`
 * `build_static_method_call($class, $method, $arguments = array(), $variable_name = 'arguments')` - Returns a string representing a method call that can be eval'd
 * `get_static_property($class, $property)`             - Returns the static `$property` of `$class`
 * `set_static_property($class, $property, $value)`     - Sets the static `$property` of `$class` to `$value`
