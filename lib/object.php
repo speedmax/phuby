@@ -2,14 +2,14 @@
 
 class Object {
     
-    public static $extended_methods = array();
-    public static $extended_parents = array();
-    public static $extended_properties = array();
+    static $extended_methods = array();
+    static $extended_parents = array();
+    static $extended_properties = array();
     public $instance_extended_methods;
     public $instance_extended_parents;
     public $instance_extended_properties;
     
-    public function __construct($arguments = null) {
+    function __construct($arguments = null) {
         $this->instance_extended_methods = self::$extended_methods;
         $this->instance_extended_parents = self::$extended_parents;
         $this->instance_extended_properties = self::$extended_properties;
@@ -19,17 +19,17 @@ class Object {
         }
     }
     
-    public function __destruct() {
+    function __destruct() {
         if ($this->respond_to('finalize')) $this->send('finalize');
     }
     
-    public function call($method, $arguments) {
+    function call($method, $arguments) {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
         return call_user_func_array(array($this, $method), $arguments);
     }
     
-    public function call_extended_method($method, $arguments) {
+    function call_extended_method($method, $arguments) {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
         $object = array_pop($this->instance_extended_methods[$method]);
@@ -38,19 +38,19 @@ class Object {
         return $result;
     }
     
-    public function is_a($class) {
+    function is_a($class) {
         return $this instanceof $class;
     }
     
-    public function method_extended($method) {
+    function method_extended($method) {
         return isset($this->instance_extended_methods[$method]);
     }
     
-    public function respond_to($method) {
+    function respond_to($method) {
         return isset($this->instance_extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }
     
-    public function send($method, $arguments = null) {
+    function send($method, $arguments = null) {
         $arguments = func_get_args();
         $method = array_shift($arguments);
         if (!$this->respond_to($method)) {
@@ -62,7 +62,7 @@ class Object {
         }
     }
     
-    public function super($arguments = null) {
+    function super($arguments = null) {
         $arguments = func_get_args();
         $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
         if (empty($caller)) {

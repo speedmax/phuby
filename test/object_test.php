@@ -3,53 +3,52 @@
 require_once '../phuby.php';
 
 class Whoa {
-    public function super_test($name) {
-        echo "Hello $name\n";
-        return 'returned from super';
+    function super_test($name) {
+        return "Hello {$name} from super";
     }
     
-    public function testing() {
-        echo 'cooool';
+    function testing() {
+        return 'cooool';
     }
 }
 
 class Dude {
     public $test_property = 'cool';
     
-    public static function extended($object) {
+    static function extended($object) {
         if (is_object($object)) $object = get_class($object);
-        echo $object.' extended Dude'."\n";
+        // echo $object.' extended Dude'."\n";
     }
     
-    public function super_test($name) {
+    function super_test($name) {
         echo "I like the name $name\n";
         return $this->super($name);
     }
     
-    public function testing2() {
+    function testing2() {
         echo 'totally';
         return 'this is a returned value';
     }
 }
 
 class UhOh {
-    public function testing() {
+    function testing() {
         $this->super();
     }
 }
 
 class Testing extends Object {
     
-    public function initialize() {
+    function initialize() {
         extend($this, 'Whoa', 'Dude');
     }
     
-    public function real_method() {
-        echo 'real_method';
+    function real_method() {
+        return 'real_method';
     }
     
     protected function protected_method() {
-        echo 'protected_method';
+        return 'protected_method';
     }
     
 }

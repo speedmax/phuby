@@ -44,6 +44,15 @@ Make sure your classes extend `Object`
 
 More coming soon...
 
+## Testing
+Phuby uses SimpleSpec BDD extension to SimpleTest, just download simple test and 
+put it as part of your php include_path or 'phuby/spec/simpletest'
+
+ - SimpleTest
+ - SimpleSpec class 
+
+please run spec/runner.php
+
 
 ## Contact
 

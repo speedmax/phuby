@@ -5,60 +5,60 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     protected $array;
     protected $valid = false;
     
-    public function initialize($array = array()) {
+    function initialize($array = array()) {
         $this->array = $array;
     }
     
-    public function count() {
+    function count() {
         return count($this->array);
     }
     
-    public function current() {
+    function current() {
         return current($this->array);
     }
     
-    public function getIterator() {
+    function getIterator() {
         return $this;
     }
     
-    public function key() {
+    function key() {
         return key($this->array);
     }
     
-    public function offsetExists($offset) {
+    function offsetExists($offset) {
         return isset($this->array[$offset]);
     }
     
-    public function offsetGet($offset) {
+    function offsetGet($offset) {
         return $this->array[$offset];
     }
     
-    public function offsetSet($offset, $value) {
+    function offsetSet($offset, $value) {
         if (empty($offset)) $offset = $this->count();
         $this->array[$offset] = $value;
     }
     
-    public function offsetUnset($offset) {
+    function offsetUnset($offset) {
         unset($this->array[$offset]);
     }
     
-    public function next() {
+    function next() {
         $this->valid = (next($this->array) !== false);
     }
     
-    public function rewind() {
+    function rewind() {
         $this->valid = (reset($this->array) !== false);
     }
     
-    public function valid() {
+    function valid() {
         return $this->valid;
     }
-    
+
 }
 
 class EnumerableMethods {
     
-    public function all($block) {
+    function all($block) {
         $failed = false;
         foreach ($this as $key => $value) {
             eval('if (!('.$block.')) $failed = true;');
@@ -67,7 +67,7 @@ class EnumerableMethods {
         return true;
     }
     
-    public function any($block) {
+    function any($block) {
         $passed = false;
         foreach ($this as $key => $value) {
             eval('if ('.$block.') $passed = true;');
@@ -76,11 +76,11 @@ class EnumerableMethods {
         return false;
     }
     
-    public function includes($object) {
+    function includes($object) {
         return in_array($object, $this->array);
     }
     
-    public function none($block) {
+    function none($block) {
         $failed = false;
         foreach ($this as $key => $value) {
             eval('if ('.$block.') $failed = true;');
@@ -89,7 +89,7 @@ class EnumerableMethods {
         return true;
     }
     
-    public function partition($block) {
+    function partition($block) {
         $passed = new Enumerable;
         $failed = new Enumerable;
         foreach ($this as $key => $value) {
@@ -98,7 +98,7 @@ class EnumerableMethods {
         return new Enumerable(array($passed, $failed));
     }
     
-    public function reject($block) {
+    function reject($block) {
         $result = new Enumerable;
         foreach ($this as $key => $value) {
             eval('if (!('.$block.')) $result[] = $value;');
@@ -106,7 +106,7 @@ class EnumerableMethods {
         return $result;
     }
     
-    public function select($block) {
+    function select($block) {
         $result = new Enumerable;
         foreach ($this as $key => $value) {
             eval('if ('.$block.') $result[] = $value;');
@@ -114,11 +114,11 @@ class EnumerableMethods {
         return $result;
     }
     
-    public function sort($block = null) {
+    function sort($block = null) {
         return new Enumerable(sort($this->array()));
     }
     
-    public function to_a() {
+    function to_a() {
         return $this->array;
     }
     
