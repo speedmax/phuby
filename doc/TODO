@@ -1,4 +1,6 @@
 * alias_method and alias_method_chain
+* callbacks
 * look into __callStatic for extending static methods
 * Add real tests
 * look into stream filters
+* observers
