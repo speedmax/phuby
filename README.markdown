@@ -24,6 +24,7 @@ INCOMPLETE
 * `Object#initialize($optional_args)`                  - Replaces `Object#__construct` (so that it works with `super`)
 * `Object#is_a($class_name)`                           - Checks if the current object or one of its parents is a `$class_name`
 * `Object#finalize()`                                  - Replaces `Object#__destruct` (so that it works with `super`)
+* `Object#method_extended($method)`                    - Checks if the current object has extended a method called `$method` and returns a boolean
 * `Object#respond_to($method_name)`                    - Checks if the current object has `$method_name` defined and returns a boolean
 * `Object#send($method_name, $optional_args)`          - Calls `$method_name` in the current object with the arguments passed to it
 * `Object#super($optional_args)`                       - Calls the method that the current method overwrote (must be called inside of a method)

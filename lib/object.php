@@ -42,6 +42,10 @@ class Object {
         return $this instanceof $class;
     }
     
+    public function method_extended($method) {
+        return isset($this->instance_extended_methods[$method]);
+    }
+    
     public function respond_to($method) {
         return isset($this->instance_extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }

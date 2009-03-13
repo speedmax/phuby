@@ -20,6 +20,7 @@
   * Add Object#extract_call_arguments($args) and update call methods
   * Remove Object#extend - just use extend($this, 'Class1', 'Class2')
   * Update Object#extract_call_arguments
+  * Add Object#method_extended
 
 2009-03-11 - Sean Huber (shuber@huberry.com)
   * Rename to phby
