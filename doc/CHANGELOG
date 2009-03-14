@@ -3,6 +3,7 @@
   * Add Enumerable#detect
   * Update existing specs
   * Update doc/TODO
+  * Add Object#inspect
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)

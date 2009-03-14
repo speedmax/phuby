@@ -38,6 +38,12 @@ class Object {
         return $result;
     }
     
+    function inspect() {
+        ob_start();
+        print_r($this);
+        return ob_get_clean();
+    }
+    
     function is_a($class) {
         return $this instanceof $class;
     }
