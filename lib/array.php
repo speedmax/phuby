@@ -10,6 +10,10 @@ class A extends Enumerable {
         $this->super($this->count(), $value);
     }
     
+    function unshift($value) {
+        return array_unshift($this->array, $value);
+    }
+    
 }
 
 extend('A', 'ArrayMethods');

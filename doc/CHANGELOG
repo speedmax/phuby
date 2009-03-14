@@ -18,6 +18,7 @@
   * Add Enumerable#values
   * Add Enumerable#values_at
   * Add Enumerable#shift
+  * Add A#unshift
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
