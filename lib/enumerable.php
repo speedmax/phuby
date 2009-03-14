@@ -165,6 +165,13 @@ abstract class EnumerableMethods {
         return array_values($this->array);
     }
     
+    function values_at($keys) {
+        $keys = func_get_args();
+        $result = new A;
+        foreach ($keys as $key) $result[] = $this[$key];
+        return $result;
+    }
+    
 }
 
 abstract class Enumerable extends Enumerator { }
