@@ -59,33 +59,21 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
 class EnumerableMethods {
     
     function all($block) {
-        $failed = false;
-        foreach ($this as $key => $value) {
-            eval('if (!('.$block.')) $failed = true;');
-            if ($failed) return false;
-        }
+        foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) return false;
         return true;
     }
     
     function any($block) {
-        $passed = false;
-        foreach ($this as $key => $value) {
-            eval('if ('.$block.') $passed = true;');
-            if ($passed) return true;
-        }
+        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) return true;
         return false;
     }
     
     function includes($object) {
-        return in_array($object, $this->array);
+        return in_array($object, $this->to_a());
     }
     
     function none($block) {
-        $failed = false;
-        foreach ($this as $key => $value) {
-            eval('if ('.$block.') $failed = true;');
-            if ($failed) return false;
-        }
+        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) return false;
         return true;
     }
     
@@ -93,7 +81,11 @@ class EnumerableMethods {
         $passed = new Enumerable;
         $failed = new Enumerable;
         foreach ($this as $key => $value) {
-            eval('if ('.$block.') { $passed[] = $value; } else { $failed[] = $value; }');
+            if (evaluate_block($block, get_defined_vars())) {
+                $passed[] = $value;
+            } else {
+                $failed[] = $value;
+            }
         }
         return new Enumerable(array($passed, $failed));
     }
@@ -101,7 +93,7 @@ class EnumerableMethods {
     function reject($block) {
         $result = new Enumerable;
         foreach ($this as $key => $value) {
-            eval('if (!('.$block.')) $result[] = $value;');
+            if (!evaluate_block($block, get_defined_vars())) $result[] = $value;
         }
         return $result;
     }
@@ -109,13 +101,13 @@ class EnumerableMethods {
     function select($block) {
         $result = new Enumerable;
         foreach ($this as $key => $value) {
-            eval('if ('.$block.') $result[] = $value;');
+            if (evaluate_block($block, get_defined_vars())) $result[] = $value;
         }
         return $result;
     }
     
     function sort($block = null) {
-        return new Enumerable(sort($this->array()));
+        return new Enumerable(sort($this->to_a()));
     }
     
     function to_a() {

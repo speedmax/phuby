@@ -1,5 +1,14 @@
 <?php
 
+function evaluate_block($block, $arguments = array()) {
+    if (isset($arguments['this'])) {
+        $arguments['self'] = $arguments['this'];
+        unset($arguments['this']);
+    }
+    extract($arguments);
+    return eval('return ('.$block.');');
+}
+
 function extend($object, $classes) {
     if (!is_array($classes)) {
         $classes = func_get_args();
