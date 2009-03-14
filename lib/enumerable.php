@@ -139,6 +139,10 @@ abstract class EnumerableMethods {
         return $result;
     }
     
+    function shift() {
+        return empty($this->array) ? $this->default : array_shift($this->array);
+    }
+    
     function sort($sort_flags = null) {
         if (is_null($sort_flags)) $sort_flags = SORT_REGULAR;
         $array = $this->array;

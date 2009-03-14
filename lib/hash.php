@@ -11,6 +11,10 @@ abstract class HashMethods {
         return $this->new_instance(array_merge($this->array, $hash));
     }
     
+    function shift() {
+        return (empty($this->array)) ? $this->super() : new A(array($this->keys()->shift(), $this->super()));
+    }
+    
     function update($hash) {
         if (is_a($hash, 'Enumerable')) $hash = $hash->array;
         $this->array = array_merge($this->array, $hash);
