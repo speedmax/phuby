@@ -4,5 +4,4 @@
 * Add real tests
 * look into stream filters
 * observers
-* fix eval issues
 * Object#call should build an instance method call to eval so that protected and private methods can be called

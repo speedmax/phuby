@@ -113,12 +113,15 @@ abstract class EnumerableMethods {
         return $result;
     }
     
-    function sort() {
-        return new Enumerable(sort($this->to_a()));
+    function sort($sort_flags = null) {
+        if (is_null($sort_flags)) $sort_flags = SORT_REGULAR;
+        $array = $this->to_a();
+        asort($array, $sort_flags);
+        return new Enumerable($array);
     }
     
-    function sort_by($block) {
-        $sorted = $this->inject(new Enumerable, '$object[$key] = evaluate_block($block, get_defined_vars()); return $object;')->sort();
+    function sort_by($block, $sort_flags = null) {
+        $sorted = $this->inject(new Enumerable, '$object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); return $object;')->sort($sort_flags);
         $result = new Enumerable;
         foreach ($sorted as $key => $value) $result[$key] = $this[$key];
         return $result;
