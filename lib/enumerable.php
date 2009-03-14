@@ -34,7 +34,6 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     }
     
     function offsetSet($offset, $value) {
-        if (empty($offset)) $offset = $this->count();
         $this->array[$offset] = $value;
     }
     
@@ -69,7 +68,7 @@ abstract class EnumerableMethods {
     }
     
     function collect($block) {
-        $result = new Enumerable;
+        $result = new A;
         foreach ($this as $key => $value) $result[] = evaluate_block($block, get_defined_vars());
         return $result;
     }
@@ -80,7 +79,7 @@ abstract class EnumerableMethods {
     }
     
     function includes($object) {
-        return in_array($object, $this->to_a());
+        return in_array($object, $this->array);
     }
     
     function inject($object, $block) {
@@ -94,46 +93,50 @@ abstract class EnumerableMethods {
     }
     
     function partition($block) {
-        $passed = new Enumerable;
-        $failed = new Enumerable;
+        $passed = $this->new_instance();
+        $failed = $this->new_instance();
         foreach ($this as $key => $value) {
             if (evaluate_block($block, get_defined_vars())) {
-                $passed[] = $value;
+                $passed[$key] = $value;
             } else {
-                $failed[] = $value;
+                $failed[$key] = $value;
             }
         }
-        return new Enumerable(array($passed, $failed));
+        return new A(array($passed, $failed));
     }
     
     function reject($block) {
-        $result = new Enumerable;
-        foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) $result[] = $value;
+        $result = $this->new_instance();
+        foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) $result[$key] = $value;
         return $result;
     }
     
     function select($block) {
-        $result = new Enumerable;
-        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) $result[] = $value;
+        $result = $this->new_instance();
+        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) $result[$key] = $value;
         return $result;
     }
     
     function sort($sort_flags = null) {
         if (is_null($sort_flags)) $sort_flags = SORT_REGULAR;
-        $array = $this->to_a();
+        $array = $this->array;
         asort($array, $sort_flags);
-        return new Enumerable($array);
+        return $this->new_instance($array);
     }
     
     function sort_by($block, $sort_flags = null) {
-        $sorted = $this->inject(new Enumerable, '$object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); return $object;')->sort($sort_flags);
-        $result = new Enumerable;
+        $sorted = $this->inject(new H, '$object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); return $object;')->sort($sort_flags);
+        $result = $this->new_instance();
         foreach ($sorted as $key => $value) $result[$key] = $this[$key];
         return $result;
     }
     
     function to_a() {
-        return $this->array;
+        return new A($this->array);
+    }
+    
+    function to_h() {
+        return new H($this->array);
     }
     
 }

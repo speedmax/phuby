@@ -5,11 +5,13 @@ class Object {
     static $extended_methods = array();
     static $extended_parents = array();
     static $extended_properties = array();
+    public $class;
     public $instance_extended_methods;
     public $instance_extended_parents;
     public $instance_extended_properties;
     
     function __construct($arguments = null) {
+        $this->class = get_class($this);
         $this->instance_extended_methods = self::$extended_methods;
         $this->instance_extended_parents = self::$extended_parents;
         $this->instance_extended_properties = self::$extended_properties;
@@ -33,7 +35,7 @@ class Object {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
         $object = array_pop($this->instance_extended_methods[$method]);
-        eval('$result = '.build_static_method_call($object, $method, $arguments).';');
+        eval('$result = '.build_function_call(array($object, $method), $arguments).';');
         $this->instance_extended_methods[$method][] = $object;
         return $result;
     }
@@ -50,6 +52,11 @@ class Object {
     
     function method_extended($method) {
         return isset($this->instance_extended_methods[$method]);
+    }
+    
+    function new_instance($arguments = null) {                      
+        $arguments = func_get_args();
+        return eval('return new '.build_function_call($this->class, $arguments).';');
     }
     
     function respond_to($method) {
@@ -73,10 +80,10 @@ class Object {
         $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
         if (empty($caller)) {
             trigger_error(get_class($this).'::super() must be called from inside of an instance method', E_USER_ERROR);
-        } else if ($this->respond_to($caller['function'])) {
+        } else if ($this->respond_to($caller['function']) && $caller['class'] != get_class($this)) {
             return $this->call('send', $caller['function'], $arguments);
         } else {
-            eval('return '.build_static_method_call('parent', $caller['function'], $arguments).';');
+            eval('return '.build_function_call(array(get_parent_class($this), $caller['function']), $arguments).';');
         }
     }
     

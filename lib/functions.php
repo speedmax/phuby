@@ -1,5 +1,18 @@
 <?php
 
+function build_function_call($function, $arguments = array(), $variable_name = 'arguments') {
+    if (!is_array($function)) $function = array($function);
+    if (is_object($function[0])) $function[0] = get_class($function[0]);
+    $function_call = join('::', $function).'(';
+    if (!empty($arguments)) {
+        $function_call .= '$'.$variable_name.'[0]';
+        for ($i = 1; $i < count($arguments); $i++) {
+            $function_call .= ', $'.$variable_name.'['.$i.']';
+        }
+    }
+    return $function_call .= ')';
+}
+
 function evaluate_block($block, $arguments = array()) {
     if (isset($arguments['this'])) {
         $arguments['self'] = $arguments['this'];
@@ -34,7 +47,7 @@ function extend($object, $classes) {
         }
         
         $arguments = array($object);
-        if (method_exists($class_name, 'extended')) eval(build_static_method_call($class_name, 'extended', $arguments).';');
+        if (method_exists($class_name, 'extended')) eval(build_function_call(array($class_name, 'extended'), $arguments).';');
     }
 }
 
@@ -58,18 +71,6 @@ function extend_property($object, $property, $value) {
         $class_name = (is_object($object)) ? get_class($object) : $object;
         set_static_property($class_name, 'extended_properties', array_merge(get_static_property($class_name, 'extended_properties'), array($property => $value)));
     }
-}
-
-function build_static_method_call($class, $method, $arguments = array(), $variable_name = 'arguments') {
-    if (is_object($class)) $class = get_class($class);
-    $method_call = $class.'::'.$method.'(';
-    if (!empty($arguments)) {
-        $method_call .= '$'.$variable_name.'[0]';
-        for ($i = 1; $i < count($arguments); $i++) {
-            $method_call .= ', $'.$variable_name.'['.$i.']';
-        }
-    }
-    return $method_call .= ')';
 }
 
 function get_static_property($class, $property) {

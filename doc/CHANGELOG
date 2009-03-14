@@ -4,6 +4,7 @@
   * Update existing specs
   * Update doc/TODO
   * Add Object#inspect
+  * Add Object#new_instance and global build_function_call methods
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
