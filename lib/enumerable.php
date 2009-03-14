@@ -123,6 +123,12 @@ abstract class EnumerableMethods {
         return $result;
     }
     
+    function replace($array) {
+        if (is_a($array, 'Enumerable')) $array = $array->array;
+        $this->array = $array;
+        return $this;
+    }
+    
     function select($block) {
         $result = $this->new_instance();
         foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) $result[$key] = $value;
