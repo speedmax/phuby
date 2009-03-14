@@ -22,7 +22,8 @@
   * Rename Enumerable#includes to Enumerable#has_value
   * Add Enumerable#has_key
   * Enumerable#offsetGet accepts an optional default value
-  * Add alias_method support
+  * Add Object#alias_method support
+  * Add Object#alias_method_chain support
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
