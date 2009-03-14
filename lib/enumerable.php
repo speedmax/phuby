@@ -72,6 +72,11 @@ abstract class EnumerableMethods {
         return in_array($object, $this->to_a());
     }
     
+    function inject($object, $block) {
+        foreach ($this as $key => $value) $object = evaluate_block($block, get_defined_vars());
+        return $object;
+    }
+    
     function none($block) {
         foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) return false;
         return true;

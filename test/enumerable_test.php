@@ -13,7 +13,9 @@ foreach ($e as $k => $v) {
 }
 // echo $e['test'];
 
-if ($e->any('$key == "ing"')) echo "true\n";
-if ($e->any('$key == "invalid"')) echo "true\n";
+if ($e->any('return $key == "ing";')) echo "true\n";
+if ($e->any('return $key == "invalid";')) echo "true\n";
+
+print_r($e->inject(array(), '$object["injected_$key"] = $value; return $object;'));
 
 ?>

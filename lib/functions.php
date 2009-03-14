@@ -6,7 +6,7 @@ function evaluate_block($block, $arguments = array()) {
         unset($arguments['this']);
     }
     extract($arguments);
-    return eval('return ('.$block.');');
+    return eval($block);
 }
 
 function extend($object, $classes) {
