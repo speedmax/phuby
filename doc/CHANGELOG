@@ -15,6 +15,7 @@
   * Add H#invert
   * Add Enumerable#replace
   * Add Enumerable#keys
+  * Add Enumerable#values
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)

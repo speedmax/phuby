@@ -161,6 +161,10 @@ abstract class EnumerableMethods {
         return new H($this->array);
     }
     
+    function values() {
+        return array_values($this->array);
+    }
+    
 }
 
 abstract class Enumerable extends Enumerator { }
