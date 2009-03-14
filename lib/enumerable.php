@@ -85,8 +85,12 @@ abstract class EnumerableMethods {
         return null;
     }
     
-    function has_value($object) {
-        return in_array($object, $this->array);
+    function has_key($key) {
+        return $this->keys()->has_value($key);
+    }
+    
+    function has_value($value) {
+        return in_array($value, $this->array);
     }
     
     function index($object) {
