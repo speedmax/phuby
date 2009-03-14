@@ -3,6 +3,7 @@
   * Update doc/TODO
   * Add Enumerable#partition
   * Add global evaluate_block($block, $arguments = array()) method
+  * Refactor EnumerableMethods
 
 2009-03-12 - Sean Huber (shuber@huberry.com)
   * Update README

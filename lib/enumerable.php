@@ -92,17 +92,13 @@ class EnumerableMethods {
     
     function reject($block) {
         $result = new Enumerable;
-        foreach ($this as $key => $value) {
-            if (!evaluate_block($block, get_defined_vars())) $result[] = $value;
-        }
+        foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) $result[] = $value;
         return $result;
     }
     
     function select($block) {
         $result = new Enumerable;
-        foreach ($this as $key => $value) {
-            if (evaluate_block($block, get_defined_vars())) $result[] = $value;
-        }
+        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) $result[] = $value;
         return $result;
     }
     
