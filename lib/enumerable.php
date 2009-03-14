@@ -85,7 +85,7 @@ abstract class EnumerableMethods {
         return null;
     }
     
-    function includes($object) {
+    function has_value($object) {
         return in_array($object, $this->array);
     }
     
