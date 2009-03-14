@@ -25,6 +25,7 @@
   * Add Object#alias_method support
   * Add Object#alias_method_chain support
   * Make alias_method and alias_method_chain global functions
+  * Fix existing specs
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
