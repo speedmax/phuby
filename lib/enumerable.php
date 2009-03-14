@@ -99,6 +99,10 @@ abstract class EnumerableMethods {
         return $object;
     }
     
+    function keys() {
+        return array_keys($this->array);
+    }
+    
     function none($block) {
         foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) return false;
         return true;
