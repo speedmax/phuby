@@ -1,6 +1,7 @@
 2009-03-14 - Sean Huber (shuber@huberry.com)
   * Fix evaluate_block issues and Enumerable methods
   * Add Enumerable#detect
+  * Update existing specs
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)

@@ -38,8 +38,8 @@ class Describe_Enumerable extends SimpleSpec {
         $e[] = 'cool';
         $e[] = 'wow';
         
-        expects($e->any('$key == "ing"'))->should_be(true);
-        expects($e->any('$key == "invalid"'))->should_be(false);
+        expects($e->any('return $value == "ing";'))->should_be(true);
+        expects($e->any('return $value == "invalid";'))->should_be(false);
     }
 }
 
