@@ -1,7 +1,11 @@
 <?php
 
 abstract class ArrayMethods {
-    //
+    
+    function compact() {
+        return $this->reject('$value == null');
+    }
+    
 }
 
 class A extends Enumerable {
