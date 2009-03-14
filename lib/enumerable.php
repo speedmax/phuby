@@ -141,7 +141,7 @@ abstract class EnumerableMethods {
     
 }
 
-class Enumerable extends Enumerator { }
+abstract class Enumerable extends Enumerator { }
 
 extend('Enumerable', 'EnumerableMethods');
 
