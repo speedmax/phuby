@@ -31,8 +31,9 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
         return isset($this->array[$offset]);
     }
     
-    function offsetGet($offset) {
-        return ($this->offsetExists($value)) ? $this->array[$offset] : $this->default;
+    function offsetGet($offset, $default = null) {
+        if (is_null($default)) $default = $this->default;
+        return ($this->offsetExists($value)) ? $this->array[$offset] : $default;
     }
     
     function offsetSet($offset, $value) {
