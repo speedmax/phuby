@@ -141,7 +141,7 @@ abstract class EnumerableMethods {
     }
     
     function replace($array) {
-        if (is_a($array, 'Enumerable')) $array = $array->array;
+        if ($array instanceof Enumerable) $array = $array->array;
         $this->array = $array;
         return $this;
     }

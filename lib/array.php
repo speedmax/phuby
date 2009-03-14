@@ -6,6 +6,19 @@ abstract class ArrayMethods {
         return $this->reject('$value == null');
     }
     
+    function flatten() {
+        $result = $this->new_instance();
+        foreach ($this as $value) {
+            if (is_array($value)) $value = new A($value);
+            if ($value instanceof A) {
+                foreach ($value->flatten() as $flattened_value) $result[] = $flattened_value;
+            } else {
+                $result[] = $value;
+            }
+        }
+        return $result;
+    }
+    
 }
 
 class A extends Enumerable {

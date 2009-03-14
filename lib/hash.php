@@ -7,7 +7,7 @@ abstract class HashMethods {
     }
     
     function merge($hash) {
-        if (is_a($hash, 'Enumerable')) $hash = $hash->array;
+        if ($hash instanceof Enumerable) $hash = $hash->array;
         return $this->new_instance(array_merge($this->array, $hash));
     }
     
@@ -16,7 +16,7 @@ abstract class HashMethods {
     }
     
     function update($hash) {
-        if (is_a($hash, 'Enumerable')) $hash = $hash->array;
+        if ($hash instanceof Enumerable) $hash = $hash->array;
         $this->array = array_merge($this->array, $hash);
         return $this;
     }
