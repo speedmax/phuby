@@ -36,7 +36,6 @@ function evaluate_block($block, $arguments = array()) {
         $arguments['self'] = $arguments['this'];
         unset($arguments['this']);
     }
-    unset($arguments['arguments']);
     unset($arguments['block']);
     extract($arguments);
     return eval($block);
