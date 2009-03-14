@@ -2,6 +2,7 @@
   * Fix evaluate_block issues and Enumerable methods
   * Add Enumerable#detect
   * Update existing specs
+  * Update doc/TODO
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
