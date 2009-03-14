@@ -89,6 +89,11 @@ abstract class EnumerableMethods {
         return in_array($object, $this->array);
     }
     
+    function index($object) {
+        foreach ($this as $key => $value) if ($value == $object) return $key;
+        return null;
+    }
+    
     function inject($object, $block) {
         foreach ($this as $key => $value) $object = evaluate_block($block, get_defined_vars());
         return $object;
