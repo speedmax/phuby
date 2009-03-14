@@ -3,10 +3,12 @@
 class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     
     public $array;
+    public $default;
     public $valid = false;
     
-    function initialize($array = array()) {
+    function initialize($array = array(), $default = null) {
         $this->array = $array;
+        $this->default = $default;
     }
     
     function count() {
@@ -30,7 +32,7 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     }
     
     function offsetGet($offset) {
-        return $this->array[$offset];
+        return ($this->offsetExists($value)) ? $this->array[$offset] : $this->default;
     }
     
     function offsetSet($offset, $value) {

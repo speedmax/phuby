@@ -8,6 +8,10 @@ $e[] = 'ing';
 $e[] = 'cool';
 $e[] = 'wow';
 
+echo $e[99];
+$e->default = 'TEST DEFAULT';
+echo $e[99]."\n";
+
 foreach ($e as $k => $v) {
     echo $k.' => '.$v."\n";
 }

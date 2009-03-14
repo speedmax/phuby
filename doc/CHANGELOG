@@ -7,6 +7,7 @@
   * Add Object#new_instance and global build_function_call methods
   * Add A and H classes
   * Make Enumerable abstract
+  * Add Enumerable->default property
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
