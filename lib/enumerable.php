@@ -90,6 +90,10 @@ abstract class EnumerableMethods {
         return null;
     }
     
+    function filter($callback = null) {
+        return $this->new_instance(array_filter($this->array, $callback));
+    }
+    
     function has_key($key) {
         return $this->keys()->has_value($key);
     }

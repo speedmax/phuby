@@ -27,6 +27,7 @@
   * Make alias_method and alias_method_chain global functions
   * Fix existing specs
   * Add A#compact
+  * Add Enumerable#filter
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
