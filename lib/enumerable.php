@@ -69,6 +69,11 @@ abstract class EnumerableMethods {
         return false;
     }
     
+    function clear() {
+        $this->array = array();
+        return $this;
+    }
+    
     function collect($block) {
         $result = new A;
         foreach ($this as $key => $value) $result[] = evaluate_block($block, get_defined_vars());

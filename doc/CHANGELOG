@@ -10,6 +10,7 @@
   * Add Enumerable->default property
   * Add H#merge
   * Add H#update
+  * Add Enumerable#clear
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
