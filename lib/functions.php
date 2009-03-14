@@ -1,5 +1,23 @@
 <?php
 
+function alias_method($object, $new_name, $old_name) {
+    extend_method($object, $object, $old_name, $new_name);
+}
+
+function alias_method_chain($object, $method, $with) {
+    $without = $method.'_without_'.$with;
+    if (is_object($object)) {
+        $object->instance_extended_methods[$without] = $object->instance_extended_methods[$method];
+        unset($object->instance_extended_methods[$method]);
+    } else {
+        $extended_methods = get_static_property($object, 'extended_methods');
+        $extended_methods[$without] = $extended_methods[$method];
+        unset($extended_methods[$method]);
+        set_static_property($object, 'extended_methods', $extended_methods);
+    }
+    extend_method($object, $object, $method.'_with_'.$with, $method);
+}
+
 function build_function_call($function, $arguments = array(), $variable_name = 'arguments') {
     if (!is_array($function)) $function = array($function);
     if (is_object($function[0])) $function[0] = get_class($function[0]);
