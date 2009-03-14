@@ -31,12 +31,12 @@ class Object {
         return call_user_func_array(array($this, $method), $arguments);
     }
     
-    function call_extended_method($method, $arguments) {
+    function call_extended_method($method_name, $arguments) {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
-        $object = array_pop($this->instance_extended_methods[$method]);
-        eval('$result = '.build_function_call(array($object, $method), $arguments).';');
-        $this->instance_extended_methods[$method][] = $object;
+        $callee = array_pop($this->instance_extended_methods[$method_name]);
+        eval('$result = '.build_function_call($callee, $arguments).';');
+        $this->instance_extended_methods[$method_name][] = $callee;
         return $result;
     }
     

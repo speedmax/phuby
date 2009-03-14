@@ -19,6 +19,9 @@ foreach ($e as $k => $v) {
 echo "***COLLECT***\n";
 print_r($e->collect('return $key;')->array);
 
+echo "***ALIAS METHOD MAP***\n";
+print_r($e->map('return $key;')->array);
+
 if ($e->any('return $key == 1;')) echo "true\n";
 if ($e->any('return $key == 4;')) echo "true\n";
 

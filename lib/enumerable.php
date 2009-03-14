@@ -60,6 +60,13 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
 
 abstract class EnumerableMethods {
     
+    function initialize($array = array(), $default = null) {
+        $this->super($array, $default);
+        $this->alias_method('fetch', 'offsetGet');
+        $this->alias_method('map', 'collect');
+        $this->alias_method('store', 'offsetSet');
+    }
+    
     function all($block) {
         foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) return false;
         return true;

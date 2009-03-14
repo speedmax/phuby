@@ -51,15 +51,16 @@ function extend($object, $classes) {
     }
 }
 
-function extend_method($object, $class, $method) {
+function extend_method($object, $class, $method, $method_name = null) {
     $class_name = (is_object($class)) ? get_class($class) : $class;
+    if (is_null($method_name)) $method_name = $method;
     if (is_object($object)) {
-        if (!isset($object->instance_extended_methods[$method])) $object->instance_extended_methods[$method] = array();
-        $object->instance_extended_methods[$method][] = $class_name;
+        if (!isset($object->instance_extended_methods[$method_name])) $object->instance_extended_methods[$method_name] = array();
+        $object->instance_extended_methods[$method_name][] = array($class_name, $method);
     } else {
         $extended_methods = get_static_property($object, 'extended_methods');
-        if (!isset($extended_methods[$method])) $extended_methods[$method] = array();
-        $extended_methods[$method][] = $class_name;
+        if (!isset($extended_methods[$method_name])) $extended_methods[$method_name] = array();
+        $extended_methods[$method_name][] = array($class_name, $method);
         set_static_property($object, 'extended_methods', $extended_methods);
     }
 }
