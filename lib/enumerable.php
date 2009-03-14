@@ -2,8 +2,8 @@
 
 class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     
-    protected $array;
-    protected $valid = false;
+    public $array;
+    public $valid = false;
     
     function initialize($array = array()) {
         $this->array = $array;
@@ -115,6 +115,13 @@ abstract class EnumerableMethods {
     
     function sort() {
         return new Enumerable(sort($this->to_a()));
+    }
+    
+    function sort_by($block) {
+        $sorted = $this->inject(new Enumerable, '$object[$key] = evaluate_block($block, get_defined_vars()); return $object;')->sort();
+        $result = new Enumerable;
+        foreach ($sorted as $key => $value) $result[$key] = $this[$key];
+        return $result;
     }
     
     function to_a() {

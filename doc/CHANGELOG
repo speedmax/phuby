@@ -7,6 +7,7 @@
   * Make EnumerableMethods class abstract
   * Add Enumerable#inject and refactor global evaluate_block
   * Add Enumerable#collect
+  * Add Enumerable#sort_by
 
 2009-03-12 - Sean Huber (shuber@huberry.com)
   * Update README
