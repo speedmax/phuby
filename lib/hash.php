@@ -2,6 +2,10 @@
 
 abstract class HashMethods {
     
+    function invert() {
+        return $this->new_instance(array_flip($this->array));
+    }
+    
     function merge($hash) {
         if (is_a($hash, 'H')) $hash = $hash->array;
         return $this->new_instance(array_merge($this->array, $hash));

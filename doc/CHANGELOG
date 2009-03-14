@@ -12,6 +12,7 @@
   * Add H#update
   * Add Enumerable#clear
   * Add Enumerable#index
+  * Add H#invert
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
