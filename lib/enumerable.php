@@ -68,6 +68,12 @@ abstract class EnumerableMethods {
         return false;
     }
     
+    function collect($block) {
+        $result = new Enumerable;
+        foreach ($this as $key => $value) $result[] = evaluate_block($block, get_defined_vars());
+        return $result;
+    }
+    
     function includes($object) {
         return in_array($object, $this->to_a());
     }
@@ -107,7 +113,7 @@ abstract class EnumerableMethods {
         return $result;
     }
     
-    function sort($block = null) {
+    function sort() {
         return new Enumerable(sort($this->to_a()));
     }
     

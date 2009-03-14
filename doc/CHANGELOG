@@ -6,6 +6,7 @@
   * Refactor EnumerableMethods
   * Make EnumerableMethods class abstract
   * Add Enumerable#inject and refactor global evaluate_block
+  * Add Enumerable#collect
 
 2009-03-12 - Sean Huber (shuber@huberry.com)
   * Update README
