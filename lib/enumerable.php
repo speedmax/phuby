@@ -74,6 +74,11 @@ abstract class EnumerableMethods {
         return $result;
     }
     
+    function detect($block) {
+        foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) return $value;
+        return null;
+    }
+    
     function includes($object) {
         return in_array($object, $this->to_a());
     }
