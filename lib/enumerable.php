@@ -194,6 +194,7 @@ abstract class EnumerableMethods {
 abstract class Enumerable extends Enumerator { }
 
 extend('Enumerable', 'EnumerableMethods');
+alias_method('Enumerable', 'at', 'offsetGet');
 alias_method('Enumerable', 'fetch', 'offsetGet');
 alias_method('Enumerable', 'map', 'collect');
 alias_method('Enumerable', 'store', 'offsetSet');

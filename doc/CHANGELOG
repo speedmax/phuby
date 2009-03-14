@@ -28,6 +28,7 @@
   * Fix existing specs
   * Add A#compact
   * Add Enumerable#filter
+  * Add Enumerable at => offsetGet alias
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
