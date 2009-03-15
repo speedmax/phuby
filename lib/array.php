@@ -51,6 +51,10 @@ abstract class ArrayMethods {
         return array_shift($this->array);
     }
     
+    function unique() {
+        return $this->new_instance(array_unique($this->array));
+    }
+    
     function unshift($arguments) {
         $arguments = func_get_args();
         array_shift($arguments, &$this->array);
