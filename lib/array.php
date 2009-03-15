@@ -33,6 +33,10 @@ abstract class ArrayMethods {
         return eval('return '.build_function_call('pack', $arguments).';');
     }
     
+    function pop() {
+        return array_pop($this->array);
+    }
+    
 }
 
 class A extends Enumerable {

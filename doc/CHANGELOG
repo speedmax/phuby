@@ -34,6 +34,7 @@
   * Update evaluate_block logic
   * Add A#concat
   * Add A#pack
+  * Add A#pop
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
