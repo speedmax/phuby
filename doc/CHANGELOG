@@ -41,6 +41,7 @@
   * Add A#unshift
   * Add A#unique
   * Add some method aliases
+  * Add A#join
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)

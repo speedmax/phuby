@@ -28,6 +28,10 @@ abstract class ArrayMethods {
         return $result;
     }
     
+    function join($glue) {
+        return join($glue, $this->array);
+    }
+    
     function pack($format) {
         $arguments = array_merge(array($format), $this->array);
         return eval('return '.build_function_call('pack', $arguments).';');
@@ -76,6 +80,7 @@ class A extends Enumerable {
 }
 
 extend('A', 'ArrayMethods');
+alias_method('A', 'implode', 'join');
 alias_method('A', 'uniq', 'unique');
 
 ?>
