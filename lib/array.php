@@ -47,6 +47,10 @@ abstract class ArrayMethods {
         return $this->new_instance(array_reverse($this->array));
     }
     
+    function shift() {
+        return array_shift($this->array);
+    }
+    
 }
 
 class A extends Enumerable {
