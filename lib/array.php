@@ -96,6 +96,10 @@ abstract class ArrayMethods {
         return $this->new_instance($array);
     }
     
+    function slice($offset, $length) {
+        return $this->new_instance(array_slice($this->array, $offset, $length));
+    }
+    
     function unique() {
         return $this->new_instance(array_unique($this->array));
     }

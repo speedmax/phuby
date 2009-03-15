@@ -4,6 +4,7 @@
   * Add A#fill
   * Add A#shuffle
   * Add A#rand
+  * Add A#slice
 
 2009-03-14 - Sean Huber (shuber@huberry.com)
   * Fix evaluate_block issues and Enumerable methods
