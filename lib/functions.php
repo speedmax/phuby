@@ -80,6 +80,10 @@ function extend_method($object, $class, $method, $method_name = null) {
         $extended_methods[$method_name][] = array($class_name, $method);
         set_static_property($object, 'extended_methods', $extended_methods);
     }
+    
+    $object_class_name = (is_object($object)) ? get_class($object) : $object;
+    $arguments = array($method_name);
+    if (method_exists($object_class_name, 'method_added')) eval(build_function_call(array($object_class_name, 'method_added'), $arguments).';');
 }
 
 function extend_property($object, $property, $value) {

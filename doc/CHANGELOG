@@ -11,6 +11,7 @@
   * Add Enumerable#rindex
   * Remove Enumerable#to_h and add A#to_h
   * Remove Enumerable#to_a and add H#to_a
+  * Add Object#method_added callback
 
 2009-03-14 - Sean Huber (shuber@huberry.com)
   * Fix evaluate_block issues and Enumerable methods
