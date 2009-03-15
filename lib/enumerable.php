@@ -136,6 +136,12 @@ abstract class EnumerableMethods {
         return $result;
     }
     
+    function rindex($object) {
+        $index = null;
+        foreach ($this as $key => $value) if ($value == $object) $index = $key;
+        return $index;
+    }
+    
     function replace($array) {
         if ($array instanceof Enumerable) $array = $array->array;
         $this->array = $array;

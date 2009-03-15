@@ -8,6 +8,7 @@
   * Add A#splice
   * Add A#assoc
   * Add A#rassoc
+  * Add Enumerable#rindex
 
 2009-03-14 - Sean Huber (shuber@huberry.com)
   * Fix evaluate_block issues and Enumerable methods
