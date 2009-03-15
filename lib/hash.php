@@ -15,6 +15,10 @@ abstract class HashMethods {
         return (empty($this->array)) ? $this->super() : new A(array($this->keys()->shift(), $this->super()));
     }
     
+    function to_a() {
+        return $this->inject(new A, '$object[] = new A(array($key, $value)); return $object;');
+    }
+    
     function update($hash) {
         if ($hash instanceof Enumerable) $hash = $hash->array;
         $this->array = array_merge($this->array, $hash);

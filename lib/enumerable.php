@@ -172,10 +172,6 @@ abstract class EnumerableMethods {
         return $result;
     }
     
-    function to_a() {
-        return new A($this->array);
-    }
-    
     function to_native_a() {
         $result = $this->array;
         foreach ($result as $key => $value) {
