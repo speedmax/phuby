@@ -51,6 +51,12 @@ abstract class ArrayMethods {
         return array_shift($this->array);
     }
     
+    function unshift($arguments) {
+        $arguments = func_get_args();
+        array_shift($arguments, &$this->array);
+        return eval('return '.build_function_call('array_unshift', $arguments).';');
+    }
+    
 }
 
 class A extends Enumerable {
