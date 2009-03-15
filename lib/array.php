@@ -86,6 +86,12 @@ abstract class ArrayMethods {
         return array_shift($this->array);
     }
     
+    function shuffle() {
+        $array = $this->array;
+        shuffle($array);
+        return $this->new_instance($array);
+    }
+    
     function unique() {
         return $this->new_instance(array_unique($this->array));
     }
