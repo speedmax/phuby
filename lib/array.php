@@ -2,6 +2,11 @@
 
 abstract class ArrayMethods {
     
+    function assoc($object) {
+        foreach ($this as $value) if ((is_array($value) || $value instanceof A) && $value[0] == $object) return $value;
+        return null;
+    }
+    
     function chunk($size) {
         if ($size < 1) {
             trigger_error('The first argument in '.$this->class.'::chunk() must be greater than 0', E_WARNING);
