@@ -115,6 +115,14 @@ abstract class ArrayMethods {
         return $this;
     }
     
+    function to_h() {
+        return $this->chunk(2)->inject(new H, '$object[$value[0]] = $value[1]; return $object;');
+    }
+    
+    function transpose() {
+        $size = $this->count();
+    }
+    
     function unique() {
         return $this->new_instance(array_unique($this->array));
     }
