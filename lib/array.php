@@ -87,6 +87,11 @@ abstract class ArrayMethods {
         return $this->new_instance(array_rand($this->array, $quantity));
     }
     
+    function rassoc($object) {
+        foreach ($this as $value) if ((is_array($value) || $value instanceof A) && $value[1] == $object) return $value;
+        return null;
+    }
+    
     function reverse() {
         return $this->new_instance(array_reverse($this->array));
     }
