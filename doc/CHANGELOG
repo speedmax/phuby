@@ -32,6 +32,7 @@
   * Add A#flatten
   * Remove EnumerableMethods#initialize
   * Update evaluate_block logic
+  * Add A#concat
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)

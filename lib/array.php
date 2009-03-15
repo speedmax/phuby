@@ -2,6 +2,15 @@
 
 abstract class ArrayMethods {
     
+    function concat($arrays) {
+        $arrays = func_get_args();
+        foreach ($arrays as $array) {
+            if ($array instanceof Enumerable) $array = $array->array;
+            foreach ($array as $value) $this[] = $value;
+        }
+        return $this;
+    }
+    
     function compact() {
         return $this->reject('$value == null');
     }
