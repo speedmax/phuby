@@ -1,3 +1,7 @@
+2009-03-15 - Sean Huber (shuber@huberry.com)
+  * Add A#chunk, A#first, and A#last
+  * Add Enumerable#to_native_a
+
 2009-03-14 - Sean Huber (shuber@huberry.com)
   * Fix evaluate_block issues and Enumerable methods
   * Add Enumerable#detect

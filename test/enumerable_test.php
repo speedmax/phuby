@@ -43,8 +43,11 @@ echo "***SORT_BY***\n";
 print_r($e->sort_by('return strlen($key);')->array);
 
 echo "***FLATTEN***\n";
-
 $e = new A(array(1, 2, 3, new A(array(4, 5, 6, new A(array(7, 8, 9))))));
 print_r($e->flatten()->array);
+
+echo "***CHUNK***\n";
+$e = new A(array(1,2,3,4,5,6,7,8));
+print_r($e->chunk(3)->to_native_a());
 
 ?>

@@ -83,7 +83,7 @@ class Object {
         } else if ($this->respond_to($caller['function']) && $caller['class'] != get_class($this)) {
             return $this->call('send', $caller['function'], $arguments);
         } else {
-            eval('return '.build_function_call(array(get_parent_class($this), $caller['function']), $arguments).';');
+            return eval('return '.build_function_call(array(get_parent_class($this), $caller['function']), $arguments).';');
         }
     }
     

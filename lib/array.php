@@ -2,6 +2,24 @@
 
 abstract class ArrayMethods {
     
+    function chunk($size) {
+        if ($size < 1) {
+            trigger_error('The first argument in '.$this->class.'::chunk() must be greater than 0', E_WARNING);
+            return null;
+        } else {
+            $result = $this->new_instance();
+            $index = 0;
+            foreach ($this as $value) {
+                if ($index++ % $size == 0) {
+                    $result[] = $this->new_instance();
+                    $result_index = $result->count() - 1;
+                }
+                $result[$result_index][] = $value;
+            }
+            return $result;
+        }
+    }
+    
     function concat($arrays) {
         $arrays = func_get_args();
         foreach ($arrays as $array) {
@@ -13,6 +31,10 @@ abstract class ArrayMethods {
     
     function compact() {
         return $this->reject('$value == null');
+    }
+    
+    function first() {
+        return $this[0];
     }
     
     function flatten() {
@@ -30,6 +52,10 @@ abstract class ArrayMethods {
     
     function join($glue) {
         return join($glue, $this->array);
+    }
+    
+    function last() {
+        return $this[$this->count() - 1];
     }
     
     function pack($format) {
@@ -70,7 +96,8 @@ abstract class ArrayMethods {
 class A extends Enumerable {
     
     function offsetSet($offset, $value) {
-        $this->super($this->count(), $value);
+        if (empty($offset)) $offset = $this->count();
+        $this->super($offset, $value);
     }
     
     function unshift($value) {
@@ -81,6 +108,7 @@ class A extends Enumerable {
 
 extend('A', 'ArrayMethods');
 alias_method('A', 'implode', 'join');
+alias_method('A', 'in_groups_of', 'chunk');
 alias_method('A', 'uniq', 'unique');
 
 ?>

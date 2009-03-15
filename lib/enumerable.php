@@ -33,7 +33,7 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     
     function offsetGet($offset, $default = null) {
         if (is_null($default)) $default = $this->default;
-        return ($this->offsetExists($value)) ? $this->array[$offset] : $default;
+        return ($this->offsetExists($offset)) ? $this->array[$offset] : $default;
     }
     
     function offsetSet($offset, $value) {
@@ -172,6 +172,16 @@ abstract class EnumerableMethods {
     
     function to_h() {
         return new H($this->array);
+    }
+    
+    function to_native_a() {
+        $result = $this->array;
+        foreach ($result as $key => $value) {
+            if ($value instanceof Enumerable) {
+                $result[$key] = $value->to_native_a();
+            }
+        }
+        return $result;
     }
     
     function values() {
