@@ -37,6 +37,12 @@ abstract class ArrayMethods {
         return array_pop($this->array);
     }
     
+    function push($arguments) {
+        $arguments = func_get_args();
+        foreach ($arguments as $argument) $this[] = $argument;
+        return $this;
+    }
+    
 }
 
 class A extends Enumerable {
