@@ -76,5 +76,6 @@ class A extends Enumerable {
 }
 
 extend('A', 'ArrayMethods');
+alias_method('A', 'uniq', 'unique');
 
 ?>
