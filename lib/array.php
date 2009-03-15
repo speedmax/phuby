@@ -43,6 +43,10 @@ abstract class ArrayMethods {
         return $this;
     }
     
+    function reverse() {
+        return $this->new_instance(array_reverse($this->array));
+    }
+    
 }
 
 class A extends Enumerable {

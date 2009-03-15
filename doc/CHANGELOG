@@ -36,6 +36,7 @@
   * Add A#pack
   * Add A#pop
   * Add A#push
+  * Add A#reverse
 
 2009-03-13 - Sean Huber (shuber@huberry.com)
   * Add Enumerable (incomplete)
