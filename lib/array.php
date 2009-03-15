@@ -100,6 +100,11 @@ abstract class ArrayMethods {
         return $this->new_instance(array_slice($this->array, $offset, $length));
     }
     
+    function splice($offset, $length = 0, $replacement = array()) {
+        array_splice($this->array, $offset, $length, $replacement);
+        return $this;
+    }
+    
     function unique() {
         return $this->new_instance(array_unique($this->array));
     }
