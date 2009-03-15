@@ -33,6 +33,11 @@ abstract class ArrayMethods {
         return $this->reject('$value == null');
     }
     
+    function fill($start, $length, $value) {
+        $this->array = array_fill($start, $length, $value);
+        return $this;
+    }
+    
     function first() {
         return $this[0];
     }
