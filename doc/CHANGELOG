@@ -1,5 +1,6 @@
 2009-03-16 - Sean Huber (shuber@huberry.com)
   * Add Struct class
+  * Add some methods to Struct
 
 2009-03-15 - Sean Huber (shuber@huberry.com)
   * Add A#chunk, A#first, and A#last

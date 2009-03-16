@@ -4,7 +4,7 @@ require_once '../phuby.php';
 
 $customer = new Struct('first_name', 'last_name');
 
-$sean = $customer->new_instance('Sean', 'Huber');
+$sean = $customer->instance('Sean', 'Huber');
 
 echo $sean->first_name."\n";
 echo $sean->last_name."\n";
