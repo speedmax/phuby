@@ -8,3 +8,4 @@
 * Mod#ancestors
 * Mod#append_features
 * fix static property inheritance issues
+* classes should copy extended methods/properties from the mixin's extended methods/properties

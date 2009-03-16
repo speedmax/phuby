@@ -2,6 +2,7 @@
   * Add Struct class
   * Add some methods to Struct
   * Update README
+  * Update doc/TODO
 
 2009-03-15 - Sean Huber (shuber@huberry.com)
   * Add A#chunk, A#first, and A#last
