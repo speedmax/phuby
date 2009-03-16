@@ -19,6 +19,7 @@ INCOMPLETE
 * Object class (all classes should inherit from this)
 * Enumerable, A (array), and H (hash) classes
 * blocks (as strings)
+* structs
 
 
 ## Usage
