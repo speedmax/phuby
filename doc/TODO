@@ -7,3 +7,4 @@
 * Object#call should build an instance method call to eval so that protected and private methods can be called
 * Mod#ancestors
 * Mod#append_features
+* fix static property inheritance issues

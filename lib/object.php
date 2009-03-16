@@ -104,7 +104,7 @@ class Object {
     }
     
     protected function __set($key, $value) {
-        $this->instance_extended_properties[$key] = $value;
+        if (isset($this->instance_extended_properties[$key])) $this->instance_extended_properties[$key] = $value;
     }
     
     protected function __unset($key) {
