@@ -43,7 +43,11 @@ abstract class StructMethods {
     
 }
 
-class Struct extends Object { }
+class Struct extends Object {
+    static $extended_methods = array();
+    static $extended_parents = array();
+    static $extended_properties = array();
+}
 
 extend('Struct', 'StructMethods');
 alias_method('Struct', 'length', 'count');

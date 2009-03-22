@@ -195,7 +195,11 @@ abstract class EnumerableMethods {
     
 }
 
-abstract class Enumerable extends Enumerator { }
+abstract class Enumerable extends Enumerator {
+    static $extended_methods = array();
+    static $extended_parents = array();
+    static $extended_properties = array();
+}
 
 extend('Enumerable', 'EnumerableMethods');
 alias_method('Enumerable', 'at', 'offsetGet');

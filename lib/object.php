@@ -11,10 +11,19 @@ class Object {
     public $instance_extended_properties;
     
     function __construct($arguments = null) {
-        $this->class = get_class($this);
-        $this->instance_extended_methods = self::$extended_methods;
-        $this->instance_extended_parents = self::$extended_parents;
-        $this->instance_extended_properties = self::$extended_properties;
+        $this->class = $class = get_class($this);
+        
+        $extend_vars = array('extended_methods', 'extended_parents', 'extended_properties');
+        foreach($extend_vars as $variable) {
+            $$variable = get_static_property($class, $variable);
+            foreach(get_ancestors($class) as $parent) {
+                if (get_static_property($parent, $variable)) {
+                    $$variable = array_merge($$variable, get_static_property($parent, $variable));
+                }
+            }
+            $this->{"instance_".$variable} = $$variable;
+        }
+
         if ($this->respond_to('initialize')) {
             $arguments = func_get_args();
             $this->call('send', 'initialize', $arguments);

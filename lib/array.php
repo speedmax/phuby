@@ -129,13 +129,16 @@ abstract class ArrayMethods {
     
     function unshift($arguments) {
         $arguments = func_get_args();
-        array_shift($arguments, &$this->array);
+        array_shift($arguments, $this->array);
         return eval('return '.build_function_call('array_unshift', $arguments).';');
     }
     
 }
 
 class A extends Enumerable {
+    static $extended_methods = array();
+    static $extended_parents = array();
+    static $extended_properties = array();
     
     function offsetSet($offset, $value) {
         if (empty($offset)) $offset = $this->count();

@@ -32,6 +32,12 @@ function build_function_call($function, $arguments = array(), $variable_name = '
 }
 
 function evaluate_block($block, $arguments = array()) {
+     # implict return
+    $lines = explode(';', $block);
+    $last =& $lines[count($lines)-2];
+    if (strpos($last, 'return') === false) $last = 'return '.$last;
+    $block = join(';', $lines);
+    
     if (isset($arguments['this'])) {
         $arguments['self'] = $arguments['this'];
         unset($arguments['this']);
@@ -41,13 +47,19 @@ function evaluate_block($block, $arguments = array()) {
     return eval($block);
 }
 
+function get_ancestors($class) {
+    for ($classes[] = $class; $class = get_parent_class($class); $classes[] = $class);
+    return $classes; 
+}
+
 function extend($object, $classes) {
     if (!is_array($classes)) {
         $classes = func_get_args();
         $object = array_shift($classes);
     }
-    
+
     foreach (array_unique($classes) as $class) {
+
         $class_name = (is_object($class)) ? get_class($class) : $class;
         if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
         
