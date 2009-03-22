@@ -133,4 +133,19 @@ function set_static_property($class, $property, $value) {
     eval($class.'::$'.$property.' = $value;');
 }
 
+# Convenience functions
+
+function a($array = array()) {
+    $args = func_get_args();
+
+    if (count($args) > 1) {
+        return new A($args);
+    } else {
+        return new A($array);
+    }
+}
+
+function h($hash = array()) {
+    return new H($hash);
+}
 ?>

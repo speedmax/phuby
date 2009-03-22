@@ -190,8 +190,6 @@ class SpecMatcher {
     }
     
     function be_a($object, $type, $message = '%s') {
-        if (strtolower($type) == 'object') 
-            $type = 'stdClass';
         return $this->runtime->assert(new IsAExpectation($type),$object, $message);
     }
     

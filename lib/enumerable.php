@@ -1,6 +1,6 @@
 <?php
 
-class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
+class Enumerator extends Object implements ArrayAccess, Countable, IteratorAggregate {
     
     public $array;
     public $default;
@@ -14,19 +14,11 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     function count() {
         return count($this->array);
     }
-    
-    function current() {
-        return current($this->array);
-    }
-    
+
     function getIterator() {
-        return $this;
+        return new ArrayIterator($this->array);
     }
-    
-    function key() {
-        return key($this->array);
-    }
-    
+
     function offsetExists($offset) {
         return isset($this->array[$offset]);
     }
@@ -42,18 +34,6 @@ class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     
     function offsetUnset($offset) {
         unset($this->array[$offset]);
-    }
-    
-    function next() {
-        $this->valid = (next($this->array) !== false);
-    }
-    
-    function rewind() {
-        $this->valid = (reset($this->array) !== false);
-    }
-    
-    function valid() {
-        return $this->valid;
     }
 
 }
@@ -166,7 +146,11 @@ abstract class EnumerableMethods {
     }
     
     function sort_by($block, $sort_flags = null) {
-        $sorted = $this->inject(new H, '$object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); return $object;')->sort($sort_flags);
+        $sorted = $this->inject(new H, '
+            $object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); 
+            $object;
+        ')->sort($sort_flags);
+        
         $result = $this->new_instance();
         foreach ($sorted as $key => $value) $result[$key] = $this[$key];
         return $result;
@@ -204,6 +188,7 @@ alias_method('Enumerable', 'at', 'offsetGet');
 alias_method('Enumerable', 'fetch', 'offsetGet');
 alias_method('Enumerable', 'length', 'count');
 alias_method('Enumerable', 'map', 'collect');
+alias_method('Enumerable', 'reduce', 'inject');
 alias_method('Enumerable', 'size', 'count');
 alias_method('Enumerable', 'store', 'offsetSet');
 
