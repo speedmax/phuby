@@ -1,27 +1,29 @@
 <?php
 
 class Object {
-    
-    static $extended_methods = array();
-    static $extended_parents = array();
-    static $extended_properties = array();
+
+    static $extended = array();
     public $class;
     public $instance_extended_methods;
     public $instance_extended_parents;
     public $instance_extended_properties;
-    
+
     function __construct($arguments = null) {
-        $this->class = $class = get_class($this);
-        
-        $extend_vars = array('extended_methods', 'extended_parents', 'extended_properties');
-        foreach($extend_vars as $variable) {
-            $$variable = get_static_property($class, $variable);
-            foreach(get_ancestors($class) as $parent) {
-                if (get_static_property($parent, $variable)) {
-                    $$variable = array_merge($$variable, get_static_property($parent, $variable));
+        $this->class = get_class($this);
+
+        $extended = get_static_property($this->class, 'extended');
+        $extending = array('methods', 'parents', 'properties');
+
+        foreach($extending as $extend_meta) {
+            $$extend_meta = isset($extended[$extend_meta]) ? $extended[$extend_meta] :array();
+
+            foreach(get_ancestors($this->class) as $parent) {
+                $parent_extended = get_static_property($parent, 'extended');
+                if (!empty($parent_extended[$extend_meta])) {
+                    $$extend_meta = array_merge($$extend_meta, $parent_extended[$extend_meta]);
                 }
             }
-            $this->{"instance_".$variable} = $$variable;
+            $this->{"instance_extended_".$extend_meta} = $$extend_meta;
         }
 
         if ($this->respond_to('initialize')) {
@@ -29,17 +31,17 @@ class Object {
             $this->call('send', 'initialize', $arguments);
         }
     }
-    
+
     function __destruct() {
         if ($this->respond_to('finalize')) $this->send('finalize');
     }
-    
+
     function call($method, $arguments) {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
         return call_user_func_array(array($this, $method), $arguments);
     }
-    
+
     function call_extended_method($method_name, $arguments) {
         $args = func_get_args();
         $arguments = $this->extract_call_arguments($args);
@@ -48,30 +50,30 @@ class Object {
         $this->instance_extended_methods[$method_name][] = $callee;
         return $result;
     }
-    
+
     function inspect() {
         ob_start();
         print_r($this);
         return ob_get_clean();
     }
-    
+
     function is_a($class) {
         return $this instanceof $class;
     }
-    
+
     function method_extended($method) {
         return isset($this->instance_extended_methods[$method]);
     }
-    
-    function new_instance($arguments = null) {                      
+
+    function new_instance($arguments = null) {
         $arguments = func_get_args();
         return eval('return new '.build_function_call($this->class, $arguments).';');
     }
-    
+
     function respond_to($method) {
         return isset($this->instance_extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
     }
-    
+
     function send($method, $arguments = null) {
         $arguments = func_get_args();
         $method = array_shift($arguments);
@@ -83,7 +85,7 @@ class Object {
             return $this->call($method, $arguments);
         }
     }
-    
+
     function super($arguments = null) {
         $arguments = func_get_args();
         $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
@@ -95,11 +97,11 @@ class Object {
             return eval('return '.build_function_call(array(get_parent_class($this), $caller['function']), $arguments).';');
         }
     }
-    
+
     protected function __call($method, $arguments = array()) {
         return $this->call('send', $method, $arguments);
     }
-    
+
     protected function __get($key) {
         if (isset($this->instance_extended_properties[$key])) {
             return $this->instance_extended_properties[$key];
@@ -107,26 +109,26 @@ class Object {
             trigger_error('Undefined property $'.$key, E_USER_ERROR);
         }
     }
-    
+
     protected function __isset($key) {
         return isset($this->instance_extended_properties[$key]);
     }
-    
+
     protected function __set($key, $value) {
         if (isset($this->instance_extended_properties[$key])) $this->instance_extended_properties[$key] = $value;
     }
-    
+
     protected function __unset($key) {
         unset($this->instance_extended_properties[$key]);
     }
-    
+
     protected function extract_call_arguments($args) {
         array_shift($args);
         $arguments = array_pop($args);
         if (!is_array($arguments)) trigger_error('The last argument in '.get_class($this).'::extract_call_arguments() must be an array', E_USER_ERROR);
         return array_merge($args, $arguments);
     }
-    
+
 }
 
 ?>

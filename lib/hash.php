@@ -28,9 +28,7 @@ abstract class HashMethods {
 }
 
 class H extends Enumerable {
-    static $extended_methods = array();
-    static $extended_parents = array();
-    static $extended_properties = array();
+    static $extended = array();
 }
 
 extend('H', 'HashMethods');

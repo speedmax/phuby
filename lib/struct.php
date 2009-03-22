@@ -44,9 +44,7 @@ abstract class StructMethods {
 }
 
 class Struct extends Object {
-    static $extended_methods = array();
-    static $extended_parents = array();
-    static $extended_properties = array();
+    static $extended = array();
 }
 
 extend('Struct', 'StructMethods');

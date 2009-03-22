@@ -136,19 +136,18 @@ abstract class ArrayMethods {
 }
 
 class A extends Enumerable {
-    static $extended_methods = array();
-    static $extended_parents = array();
-    static $extended_properties = array();
-    
+
+    static $extended = array();
+
     function offsetSet($offset, $value) {
         if (empty($offset)) $offset = $this->count();
         $this->super($offset, $value);
     }
-    
+
     function unshift($value) {
         return array_unshift($this->array, $value);
     }
-    
+
 }
 
 extend('A', 'ArrayMethods');

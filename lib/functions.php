@@ -10,10 +10,15 @@ function alias_method_chain($object, $method, $with) {
         $object->instance_extended_methods[$without] = $object->instance_extended_methods[$method];
         unset($object->instance_extended_methods[$method]);
     } else {
-        $extended_methods = get_static_property($object, 'extended_methods');
-        $extended_methods[$without] = $extended_methods[$method];
-        unset($extended_methods[$method]);
-        set_static_property($object, 'extended_methods', $extended_methods);
+        $extended = get_static_property($object, 'extended');
+        
+        if (!isset($extended['methods'])) {
+            $extended['methods'] = array();
+        }
+
+        $extended['methods'][$without] = $extended['methods'][$method];
+        unset($extended['methods'][$method]);
+        set_static_property($object, 'extended', $extended);
     }
     extend_method($object, $object, $method.'_with_'.$with, $method);
 }
@@ -37,7 +42,7 @@ function evaluate_block($block, $arguments = array()) {
     $last =& $lines[count($lines)-2];
     if (strpos($last, 'return') === false) $last = 'return '.$last;
     $block = join(';', $lines);
-    
+
     if (isset($arguments['this'])) {
         $arguments['self'] = $arguments['this'];
         unset($arguments['this']);
@@ -49,7 +54,7 @@ function evaluate_block($block, $arguments = array()) {
 
 function get_ancestors($class) {
     for ($classes[] = $class; $class = get_parent_class($class); $classes[] = $class);
-    return $classes; 
+    return $classes;
 }
 
 function extend($object, $classes) {
@@ -62,19 +67,24 @@ function extend($object, $classes) {
 
         $class_name = (is_object($class)) ? get_class($class) : $class;
         if (!class_exists($class_name)) trigger_error('Undefined class '.$class_name, E_USER_ERROR);
-        
+
         $methods = get_class_methods($class_name);
         foreach ($methods as $method) extend_method($object, $class, $method);
-        
+
         $properties = (is_object($class)) ? get_object_vars($class) : get_class_vars($class);
         foreach ($properties as $property => $value) extend_property($object, $property, $value);
-        
+
         if (is_object($object)) {
             $object->instance_extended_parents[] = $class_name;
         } else {
-            set_static_property($object, 'extended_parents', array_merge(get_static_property($object, 'extended_parents'), array($class_name)));
+            $extended = get_static_property($object, 'extended');
+            if (!isset($extended['parents'])) {
+                $extended['parents'] = array();
+            }
+            $extended['parents'] = array_merge($extended['parents'], array($class_name));
+            set_static_property($object, 'extended', $extended);
         }
-        
+
         $arguments = array($object);
         if (method_exists($class_name, 'extended')) eval(build_function_call(array($class_name, 'extended'), $arguments).';');
     }
@@ -87,12 +97,15 @@ function extend_method($object, $class, $method, $method_name = null) {
         if (!isset($object->instance_extended_methods[$method_name])) $object->instance_extended_methods[$method_name] = array();
         $object->instance_extended_methods[$method_name][] = array($class_name, $method);
     } else {
-        $extended_methods = get_static_property($object, 'extended_methods');
-        if (!isset($extended_methods[$method_name])) $extended_methods[$method_name] = array();
-        $extended_methods[$method_name][] = array($class_name, $method);
-        set_static_property($object, 'extended_methods', $extended_methods);
+        $extended = get_static_property($object, 'extended');
+        
+        if (!isset($extended['methods'])) $extended['methods'] = array();
+        if (!isset($extended['methods'][$method_name])) $extended['methods'][$method_name] = array();
+        
+        $extended['methods'][$method_name][] = array($class_name, $method);
+        set_static_property($object, 'extended', $extended);
     }
-    
+
     $object_class_name = (is_object($object)) ? get_class($object) : $object;
     $arguments = array($method_name);
     if (method_exists($object_class_name, 'method_added')) eval(build_function_call(array($object_class_name, 'method_added'), $arguments).';');
@@ -103,7 +116,12 @@ function extend_property($object, $property, $value) {
         $object->instance_extended_properties[$property] = $value;
     } else {
         $class_name = (is_object($object)) ? get_class($object) : $object;
-        set_static_property($class_name, 'extended_properties', array_merge(get_static_property($class_name, 'extended_properties'), array($property => $value)));
+
+        $extended = get_static_property($class_name, 'extended');
+        if (!isset($extended['properties'])) $extended['properties'] = array();
+
+        $extended['properties'] = array_merge($extended['properties'], array($property => $value));
+        set_static_property($class_name, 'extended', $extended);
     }
 }
 
