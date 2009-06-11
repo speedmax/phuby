@@ -5,6 +5,10 @@ class Object extends Module {
     public $class;
     public $instance_variables;
     
+    function __clone() {
+        $this->send_array('cloned');
+    }
+    
     function __construct($arguments = null) {
         $this->class = get_class($this);
         $this->instance_variables = call_class_method($this->class, 'properties');
@@ -15,19 +19,12 @@ class Object extends Module {
     }
     
     function __destruct() {
-        if ($this->respond_to('finalize')) $this->send('finalize');
+        if ($this->respond_to('finalize')) $this->send_array('finalize');
     }
     
     function respond_to($method) {
         $methods = call_class_method($this->class, 'methods');
         return in_array($method, get_class_methods($this->class)) || (in_array($method, array_keys($methods)) && !empty($methods[$method]));
-    }
-    
-    function &send($method, $arguments = null) {
-        $arguments = func_get_args();
-        $method = array_shift($arguments);
-        $result = &$this->send_array($method, $arguments);
-        return $result;
     }
     
     function &send_array($method, $arguments = array()) {
@@ -72,10 +69,6 @@ class Object extends Module {
     protected function &__call($method, $arguments = array()) {
         $result = &$this->send_array('method_missing', array($method, $arguments));
         return $result;
-    }
-    
-    protected function __clone() {
-        $this->send_array('cloned');
     }
     
     protected function &__get($property) {
@@ -128,6 +121,13 @@ abstract class ObjectMethods {
     }
     
     function &method_missing($method, $arguments = array()) {
+        $result = &$this->send_array($method, $arguments);
+        return $result;
+    }
+    
+    function &send($method, $arguments = null) {
+        $arguments = func_get_args();
+        $method = array_shift($arguments);
         $result = &$this->send_array($method, $arguments);
         return $result;
     }

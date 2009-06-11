@@ -15,11 +15,6 @@ class Whoa {
 class Dude {
     public $test_property = 'cool';
     
-    static function extended($object) {
-        if (is_object($object)) $object = get_class($object);
-        // echo $object.' extended Dude'."\n";
-    }
-    
     function super_test($name) {
         echo "I like the name $name\n";
         return $this->super($name);
@@ -61,7 +56,7 @@ echo "\n";
 echo $t->testing2();
 echo "\n";
 
-$t->send('testing');
+echo $t->send('testing').' guy';
 echo "\n";
 
 echo $t->respond_to('real_method');
@@ -85,8 +80,8 @@ echo "\n";
 echo $t->is_a('Invalid');
 echo "\n";
 
-// print_r($t);
-$t->dup();
+// $dup = $t->dup();
+// print_r($dup);
 
 $t->super();
 
