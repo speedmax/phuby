@@ -4,6 +4,7 @@
   * Add autoloading and marshal class
   * Add Object::cloned and Object#dup
   * Add Object#__clone
+  * Add Object#superclass
 
 2009-03-16 - Sean Huber (shuber@huberry.com)
   * Add Struct class

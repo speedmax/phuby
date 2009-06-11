@@ -4,6 +4,7 @@ class Object extends Module {
     
     public $class;
     public $instance_variables;
+    public $superclass;
     
     function __clone() {
         $this->send_array('cloned');
@@ -12,6 +13,7 @@ class Object extends Module {
     function __construct($arguments = null) {
         $this->class = get_class($this);
         $this->instance_variables = call_class_method($this->class, 'properties');
+        $this->superclass = array_pop(class_parents($this->class));
         if ($this->respond_to('initialize')) {
             $arguments = func_get_args();
             $this->send_array('initialize', $arguments);
