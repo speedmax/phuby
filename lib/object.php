@@ -74,6 +74,10 @@ class Object extends Module {
         return $result;
     }
     
+    protected function __clone() {
+        $this->send_array('cloned');
+    }
+    
     protected function &__get($property) {
         if (isset($this->$property)) {
             return $this->instance_variables[$property];
@@ -102,6 +106,12 @@ class Object extends Module {
 }
 
 abstract class ObjectMethods {
+    
+    function cloned() { }
+    
+    function dup() {
+        return clone $this;
+    }
     
     function inspect() {
         ob_start();
