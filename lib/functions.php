@@ -34,6 +34,15 @@ function get_class_variable($class, $variable) {
     return eval('return '.$class.'::$'.$variable.';');
 }
 
+function phuby_autoload($class) {
+    $namespaces = split('::', $class);
+    $file = '..'.DS.'lib';
+    foreach ($namespaces as $namespace) {
+        $file .= DS.strtolower(preg_replace('/[^A-Z^a-z^0-9]+/', '_', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', preg_replace('/([A-Z]+)([A-Z][a-z])/', '\1_\2', $namespace))));
+    }
+    require_once $file.'.php';
+}
+
 function proc($block) {
     $arguments = func_get_args();
     return eval('return '.build_function_call('new Proc', $arguments).';');

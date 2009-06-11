@@ -1,6 +1,7 @@
 2009-06-11 - Sean Huber (shuber@huberry.com)
   * Huge refactor
   * Add Object::new_instance_array method
+  * Add autoloading and marshal class
 
 2009-03-16 - Sean Huber (shuber@huberry.com)
   * Add Struct class
