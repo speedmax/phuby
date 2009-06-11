@@ -15,8 +15,13 @@ if (!function_exists('get_called_class')) {
 
 function build_function_call($function, $arguments = array(), $variable_name = 'arguments') {
     if (!is_array($function)) $function = array($function);
-    if (is_object($function[0])) $function[0] = get_class($function[0]);
-    return join('::', $function).'('.splat($arguments, $variable_name).')';
+    if (is_object($function[0])) { 
+        $function[0] = get_class($function[0]);
+        $join = '->';
+    } else {
+        $join = '::';
+    }
+    return join($join, $function).'('.splat($arguments, $variable_name).')';
 }
 
 function &call_class_method($class, $method, $arguments = array()) {
