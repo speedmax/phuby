@@ -56,6 +56,10 @@ abstract class Module {
     
     static function new_instance($arguments = null) {
         $arguments = func_get_args();
+        return call_class_method(get_called_class(), 'new_instance_array', array($arguments));
+    }
+    
+    static function new_instance_array($arguments = array()) {
         eval('$instance = '.build_function_call('new '.get_called_class(), $arguments).';');
         return $instance;
     }
