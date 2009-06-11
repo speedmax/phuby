@@ -1,5 +1,7 @@
 <?php
 
+class Struct extends Object { }
+
 abstract class StructMethods {
     
     public $members = array();
@@ -14,9 +16,9 @@ abstract class StructMethods {
     }
     
     function instance($values) {
-        $instance = $this->new_instance($this->members);
+        $instance = call_class_method($this->class, 'new_instance', array($this->members));
         $values = func_get_args();
-        foreach ($this->members as $key => $member) extend_property($instance, $member, $values[$key]);
+        foreach ($this->members as $key => $member) $instance->$member = $values[$key];
         return $instance;
     }
     
@@ -25,13 +27,13 @@ abstract class StructMethods {
     }
     
     function to_a() {
-        $result = new A;
+        $result = new Arr;
         foreach ($this->members as $member) $result[] = $this->$member;
         return $result;
     }
     
     function to_h() {
-        $result = new H;
+        $result = new Hash;
         foreach ($this->members as $member) $result[$member] = $this->$member;
         return $result;
     }
@@ -43,11 +45,8 @@ abstract class StructMethods {
     
 }
 
-class Struct extends Object { }
+Struct::extend('StructMethods');
 
-extend('Struct', 'StructMethods');
-alias_method('Struct', 'length', 'count');
-alias_method('Struct', 'size', 'count');
-alias_method('Struct', 'values', 'to_a');
-
-?>
+Struct::alias_method('length', 'count');
+Struct::alias_method('size', 'count');
+Struct::alias_method('values', 'to_a');

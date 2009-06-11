@@ -2,7 +2,14 @@
 
 require_once '../phuby.php';
 
-$e = new A;
+// print_r(Enumerable::methods());
+
+// print_r(Module::$mixins);
+
+$e = new Arr;
+
+// print_r(Arr::mixins());
+// print_r(Arr::methods());
 
 $e[] = 'ing';
 $e[] = 'cool';
@@ -28,7 +35,7 @@ if ($e->any('return $key == 4;')) echo "true\n";
 echo "***INJECT***\n";
 print_r($e->inject(array(), '$object["injected_$key"] = $value; return $object;'));
 
-$e = new H;
+$e = new Hash;
 $e['short'] = 4;
 $e['this is a longer one'] = 12;
 $e['this is long'] = 2;
@@ -43,11 +50,9 @@ echo "***SORT_BY***\n";
 print_r($e->sort_by('return strlen($key);')->array);
 
 echo "***FLATTEN***\n";
-$e = new A(array(1, 2, 3, new A(array(4, 5, 6, new A(array(7, 8, 9))))));
+$e = new Arr(array(1, 2, 3, new Arr(array(4, 5, 6, new Arr(array(7, 8, 9))))));
 print_r($e->flatten()->array);
 
 echo "***CHUNK***\n";
-$e = new A(array(1,2,3,4,5,6,7,8));
+$e = new Arr(array(1,2,3,4,5,6,7,8));
 print_r($e->chunk(3)->to_native_a());
-
-?>

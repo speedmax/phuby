@@ -1,3 +1,6 @@
+2009-06-11 - Sean Huber (shuber@huberry.com)
+  * Huge refactor
+
 2009-03-16 - Sean Huber (shuber@huberry.com)
   * Add Struct class
   * Add some methods to Struct

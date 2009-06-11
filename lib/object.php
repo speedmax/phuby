@@ -1,23 +1,16 @@
 <?php
 
-class Object {
+class Object extends Module {
     
-    static $extended_methods = array();
-    static $extended_parents = array();
-    static $extended_properties = array();
     public $class;
-    public $instance_extended_methods;
-    public $instance_extended_parents;
-    public $instance_extended_properties;
+    public $instance_variables;
     
     function __construct($arguments = null) {
         $this->class = get_class($this);
-        $this->instance_extended_methods = self::$extended_methods;
-        $this->instance_extended_parents = self::$extended_parents;
-        $this->instance_extended_properties = self::$extended_properties;
+        $this->instance_variables = call_class_method($this->class, 'properties');
         if ($this->respond_to('initialize')) {
             $arguments = func_get_args();
-            $this->call('send', 'initialize', $arguments);
+            $this->send_array('initialize', $arguments);
         }
     }
     
@@ -25,20 +18,90 @@ class Object {
         if ($this->respond_to('finalize')) $this->send('finalize');
     }
     
-    function call($method, $arguments) {
-        $args = func_get_args();
-        $arguments = $this->extract_call_arguments($args);
-        return call_user_func_array(array($this, $method), $arguments);
+    function respond_to($method) {
+        $methods = call_class_method($this->class, 'methods');
+        return in_array($method, get_class_methods($this->class)) || (in_array($method, array_keys($methods)) && !empty($methods[$method]));
     }
     
-    function call_extended_method($method_name, $arguments) {
-        $args = func_get_args();
-        $arguments = $this->extract_call_arguments($args);
-        $callee = array_pop($this->instance_extended_methods[$method_name]);
-        eval('$result = '.build_function_call($callee, $arguments).';');
-        $this->instance_extended_methods[$method_name][] = $callee;
+    function &send($method, $arguments = null) {
+        $arguments = func_get_args();
+        $method = array_shift($arguments);
+        $result = &$this->send_array($method, $arguments);
         return $result;
     }
+    
+    function &send_array($method, $arguments = array()) {
+        $methods = &call_class_method($this->class, 'methods');
+        if (!$this->respond_to($method)) {
+            trigger_error('Undefined method '.$this->class.'::'.$method.'()', E_USER_ERROR);
+        } else if (!isset($methods[$method]) || empty($methods[$method])) {
+            $result = call_user_func_array(array($this, $method), $arguments);
+            return $result;
+        } else {
+            eval('$result = &'.build_function_call($methods[$method][0], $arguments).';');
+            return $result;
+        }
+    }
+    
+    function &super($arguments = null) {
+        $arguments = func_get_args();
+        $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
+        if (empty($caller)) {
+            trigger_error($this->class.'::super() must be called from inside of an instance method', E_USER_ERROR);
+        } else {
+            $methods = &call_class_method($this->class, 'methods');
+            $aliases = call_class_method($this->class, 'aliases');
+            $method = $caller['function'];
+            foreach (array_reverse($aliases) as $alias) {
+                if ($alias[1] == $method) {
+                    $method = $alias[0];
+                    break;
+                }
+            }
+            if (isset($methods[$method]) && !empty($methods[$method])) {
+                $callee = array_shift($methods[$method]);
+                $result = &$this->send_array($method, $arguments);
+                array_unshift($methods[$method], $callee);
+            } else {
+                eval('$result = &'.build_function_call(array(get_parent_class($this), $method), $arguments).';');
+            }
+            return $result;
+        }
+    }
+    
+    protected function &__call($method, $arguments = array()) {
+        $result = &$this->send_array('method_missing', array($method, $arguments));
+        return $result;
+    }
+    
+    protected function &__get($property) {
+        if (isset($this->$property)) {
+            return $this->instance_variables[$property];
+        } else {
+            $this->instance_variables = array_merge(call_class_method($this->class, 'properties'), $this->instance_variables);
+            if (isset($this->instance_variables[$property])) {
+                return $this->instance_variables[$property];
+            } else {
+                trigger_error('Undefined property $'.$property, E_USER_ERROR);
+            }
+        }
+    }
+    
+    protected function __isset($property) {
+        return isset($this->instance_variables[$property]);
+    }
+    
+    protected function __set($property, $value) {
+        $this->instance_variables[$property] = $value;
+    }
+    
+    protected function __unset($property) {
+        unset($this->instance_variables[$property]);
+    }
+    
+}
+
+abstract class ObjectMethods {
     
     function inspect() {
         ob_start();
@@ -46,78 +109,21 @@ class Object {
         return ob_get_clean();
     }
     
+    function instance_variables() {
+        return $this->instance_variables;
+    }
+    
     function is_a($class) {
         return $this instanceof $class;
     }
     
-    function method_extended($method) {
-        return isset($this->instance_extended_methods[$method]);
-    }
-    
-    function new_instance($arguments = null) {                      
-        $arguments = func_get_args();
-        return eval('return new '.build_function_call($this->class, $arguments).';');
-    }
-    
-    function respond_to($method) {
-        return isset($this->instance_extended_methods[$method]) || in_array($method, get_class_methods(get_class($this)));
-    }
-    
-    function send($method, $arguments = null) {
-        $arguments = func_get_args();
-        $method = array_shift($arguments);
-        if (!$this->respond_to($method)) {
-            trigger_error('Undefined method '.get_class($this).'::'.$method.'()', E_USER_ERROR);
-        } else if (isset($this->instance_extended_methods[$method]) && !empty($this->instance_extended_methods[$method])) {
-            return $this->call_extended_method($method, $arguments);
-        } else {
-            return $this->call($method, $arguments);
-        }
-    }
-    
-    function super($arguments = null) {
-        $arguments = func_get_args();
-        $caller = array_pop(array_slice(debug_backtrace(), 1, 1));
-        if (empty($caller)) {
-            trigger_error(get_class($this).'::super() must be called from inside of an instance method', E_USER_ERROR);
-        } else if ($this->respond_to($caller['function']) && $caller['class'] != get_class($this)) {
-            return $this->call('send', $caller['function'], $arguments);
-        } else {
-            return eval('return '.build_function_call(array(get_parent_class($this), $caller['function']), $arguments).';');
-        }
-    }
-    
-    protected function __call($method, $arguments = array()) {
-        return $this->call('send', $method, $arguments);
-    }
-    
-    protected function __get($key) {
-        if (isset($this->instance_extended_properties[$key])) {
-            return $this->instance_extended_properties[$key];
-        } else {
-            trigger_error('Undefined property $'.$key, E_USER_ERROR);
-        }
-    }
-    
-    protected function __isset($key) {
-        return isset($this->instance_extended_properties[$key]);
-    }
-    
-    protected function __set($key, $value) {
-        if (isset($this->instance_extended_properties[$key])) $this->instance_extended_properties[$key] = $value;
-    }
-    
-    protected function __unset($key) {
-        unset($this->instance_extended_properties[$key]);
-    }
-    
-    protected function extract_call_arguments($args) {
-        array_shift($args);
-        $arguments = array_pop($args);
-        if (!is_array($arguments)) trigger_error('The last argument in '.get_class($this).'::extract_call_arguments() must be an array', E_USER_ERROR);
-        return array_merge($args, $arguments);
+    function &method_missing($method, $arguments = array()) {
+        $result = &$this->send_array($method, $arguments);
+        return $result;
     }
     
 }
 
-?>
+Object::extend('ObjectMethods');
+
+Object::alias_method('is_an', 'is_a');

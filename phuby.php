@@ -1,7 +1,9 @@
 <?php
 
 require_once 'lib/functions.php';
+require_once 'lib/module.php';
 require_once 'lib/object.php';
+require_once 'lib/proc.php';
 require_once 'lib/enumerable.php';
 require_once 'lib/array.php';
 require_once 'lib/hash.php';
