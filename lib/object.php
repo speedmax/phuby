@@ -136,6 +136,6 @@ abstract class ObjectMethods {
     
 }
 
-Object::extend('ObjectMethods');
+Object::extend('ObjectMethods', 'Delegator');
 
 Object::alias_method('is_an', 'is_a');

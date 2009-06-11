@@ -24,6 +24,10 @@ class Dude {
         echo 'totally';
         return 'this is a returned value';
     }
+    
+    function delegated() {
+        echo 'delegated from Dude'."\n";
+    }
 }
 
 class UhOh {
@@ -82,6 +86,9 @@ echo "\n";
 
 // $dup = $t->dup();
 // print_r($dup);
+
+Testing::delegate('delegated', 'Dude');
+$t->delegated();
 
 $t->super();
 
