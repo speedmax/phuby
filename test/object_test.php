@@ -15,11 +15,6 @@ class Whoa {
 class Dude {
     public $test_property = 'cool';
     
-    static function extended($object) {
-        if (is_object($object)) $object = get_class($object);
-        // echo $object.' extended Dude'."\n";
-    }
-    
     function super_test($name) {
         echo "I like the name $name\n";
         return $this->super($name);
@@ -28,6 +23,10 @@ class Dude {
     function testing2() {
         echo 'totally';
         return 'this is a returned value';
+    }
+    
+    function delegated() {
+        echo 'delegated from Dude'."\n";
     }
 }
 
@@ -39,10 +38,6 @@ class UhOh {
 
 class Testing extends Object {
     
-    function initialize() {
-        extend($this, 'Whoa', 'Dude');
-    }
-    
     function real_method() {
         return 'real_method';
     }
@@ -52,6 +47,7 @@ class Testing extends Object {
     }
     
 }
+Testing::extend('Whoa', 'Dude');
 
 $t = new Testing;
 
@@ -64,7 +60,7 @@ echo "\n";
 echo $t->testing2();
 echo "\n";
 
-$t->send('testing');
+echo $t->send('testing').' guy';
 echo "\n";
 
 echo $t->respond_to('real_method');
@@ -88,7 +84,11 @@ echo "\n";
 echo $t->is_a('Invalid');
 echo "\n";
 
-// print_r($t);
+// $dup = $t->dup();
+// print_r($dup);
+
+Testing::delegate('delegated', 'Dude');
+$t->delegated();
 
 $t->super();
 

@@ -1,3 +1,13 @@
+2009-06-11 - Sean Huber (shuber@huberry.com)
+  * Huge refactor
+  * Add Object::new_instance_array method
+  * Add autoloading and marshal class
+  * Add Object::cloned and Object#dup
+  * Add Object#__clone
+  * Add Object#superclass
+  * build_function_call supports calling instance methods
+  * Add Delegator (incomplete)
+
 2009-03-16 - Sean Huber (shuber@huberry.com)
   * Add Struct class
   * Add some methods to Struct

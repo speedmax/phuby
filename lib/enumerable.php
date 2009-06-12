@@ -1,6 +1,6 @@
 <?php
 
-class Enumerator extends Object implements ArrayAccess, Countable, IteratorAggregate {
+class Enumerator extends Object implements Iterator, ArrayAccess, Countable {
     
     public $array;
     public $default;
@@ -14,11 +14,19 @@ class Enumerator extends Object implements ArrayAccess, Countable, IteratorAggre
     function count() {
         return count($this->array);
     }
-
-    function getIterator() {
-        return new ArrayIterator($this->array);
+    
+    function current() {
+        return current($this->array);
     }
-
+    
+    function getIterator() {
+        return $this;
+    }
+    
+    function key() {
+        return key($this->array);
+    }
+    
     function offsetExists($offset) {
         return isset($this->array[$offset]);
     }
@@ -35,8 +43,22 @@ class Enumerator extends Object implements ArrayAccess, Countable, IteratorAggre
     function offsetUnset($offset) {
         unset($this->array[$offset]);
     }
+    
+    function next() {
+        $this->valid = (next($this->array) !== false);
+    }
+    
+    function rewind() {
+        $this->valid = (reset($this->array) !== false);
+    }
+    
+    function valid() {
+        return $this->valid;
+    }
 
 }
+
+abstract class Enumerable extends Enumerator { }
 
 abstract class EnumerableMethods {
     
@@ -56,7 +78,7 @@ abstract class EnumerableMethods {
     }
     
     function collect($block) {
-        $result = new A;
+        $result = new Arr;
         foreach ($this as $key => $value) $result[] = evaluate_block($block, get_defined_vars());
         return $result;
     }
@@ -67,7 +89,7 @@ abstract class EnumerableMethods {
     }
     
     function filter($callback = null) {
-        return $this->new_instance(array_filter($this->array, $callback));
+        return call_class_method($this->class, 'new_instance', array(array_filter($this->array, $callback)));
     }
     
     function has_key($key) {
@@ -98,8 +120,8 @@ abstract class EnumerableMethods {
     }
     
     function partition($block) {
-        $passed = $this->new_instance();
-        $failed = $this->new_instance();
+        $passed = call_class_method($this->class, 'new_instance');
+        $failed = call_class_method($this->class, 'new_instance');
         foreach ($this as $key => $value) {
             if (evaluate_block($block, get_defined_vars())) {
                 $passed[$key] = $value;
@@ -107,11 +129,11 @@ abstract class EnumerableMethods {
                 $failed[$key] = $value;
             }
         }
-        return new A(array($passed, $failed));
+        return new Arr(array($passed, $failed));
     }
     
     function reject($block) {
-        $result = $this->new_instance();
+        $result = call_class_method($this->class, 'new_instance');
         foreach ($this as $key => $value) if (!evaluate_block($block, get_defined_vars())) $result[$key] = $value;
         return $result;
     }
@@ -129,7 +151,7 @@ abstract class EnumerableMethods {
     }
     
     function select($block) {
-        $result = $this->new_instance();
+        $result = call_class_method($this->class, 'new_instance');
         foreach ($this as $key => $value) if (evaluate_block($block, get_defined_vars())) $result[$key] = $value;
         return $result;
     }
@@ -142,16 +164,12 @@ abstract class EnumerableMethods {
         if (is_null($sort_flags)) $sort_flags = SORT_REGULAR;
         $array = $this->array;
         asort($array, $sort_flags);
-        return $this->new_instance($array);
+        return call_class_method($this->class, 'new_instance', array($array));
     }
     
     function sort_by($block, $sort_flags = null) {
-        $sorted = $this->inject(new H, '
-            $object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); 
-            $object;
-        ')->sort($sort_flags);
-        
-        $result = $this->new_instance();
+        $sorted = $this->inject(new Hash, '$object[$key] = evaluate_block(\''.$block.'\', get_defined_vars()); return $object;')->sort($sort_flags);
+        $result = call_class_method($this->class, 'new_instance');
         foreach ($sorted as $key => $value) $result[$key] = $this[$key];
         return $result;
     }
@@ -172,24 +190,18 @@ abstract class EnumerableMethods {
     
     function values_at($keys) {
         $keys = func_get_args();
-        $result = new A;
+        $result = new Arr;
         foreach ($keys as $key) $result[] = $this[$key];
         return $result;
     }
     
 }
 
-abstract class Enumerable extends Enumerator {
-    static $extended = array();
-}
+Enumerable::extend('EnumerableMethods');
 
-extend('Enumerable', 'EnumerableMethods');
-alias_method('Enumerable', 'at', 'offsetGet');
-alias_method('Enumerable', 'fetch', 'offsetGet');
-alias_method('Enumerable', 'length', 'count');
-alias_method('Enumerable', 'map', 'collect');
-alias_method('Enumerable', 'reduce', 'inject');
-alias_method('Enumerable', 'size', 'count');
-alias_method('Enumerable', 'store', 'offsetSet');
-
-?>
+Enumerable::alias_method('at', 'offsetGet');
+Enumerable::alias_method('fetch', 'offsetGet');
+Enumerable::alias_method('length', 'count');
+Enumerable::alias_method('map', 'collect');
+Enumerable::alias_method('size', 'count');
+Enumerable::alias_method('store', 'offsetSet');

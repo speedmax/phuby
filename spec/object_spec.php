@@ -6,20 +6,20 @@ class Describe_Object extends SimpleSpec {
     function should_be_able_to_invoke_overloaded_methods() {
         $t = new Testing;
         
-        expects($t->testing())->should_be('Whoa::testing');
+        expects($t->testing())->should_be('cooool');
         
-        expects($t->testing2())->should_be('Dude::testing2');
+        expects($t->testing2())->should_be('this is a returned value');
     }
     
     function should_dispatch_message_passing_using_method_send() {
         $t = new Testing;
-        expects($t->send('testing'))->should_be('Whoa::testing');
+        expects($t->send('testing'))->should_be('cooool');
         
     }
     
     function should_respond_to_a_implemented_method() {
         $t = new Testing;
-        
+
         expects($t->respond_to('real_method'))->should_be(true);
 
         expects($t->respond_to('testing'))->should_be(true);
@@ -41,12 +41,12 @@ class Describe_Object extends SimpleSpec {
     
     function should_call_parent_method_using_method_super() {
         $t = new Testing;
-        expects($t->super_test('sean'))->should_match('/Hello sean from Whoa::super_test/');
+        expects($t->super_test('sean'))->should_match('/Hello sean from super/');
     }
     
     function should_raise_error_when_caller_does_not_exists_for_method_super() {
         $t = new Testing;
-        // fixme: this is not working yet
+        //fixme: this is not working yet
         // $t->super();
         // $this->should_expect_error();
     }
@@ -55,28 +55,27 @@ class Describe_Object extends SimpleSpec {
 
 class Whoa {
     function super_test($name) {
-        return "Hello {$name} from ". __METHOD__;
+        return "Hello {$name} from super";
     }
     
     function testing() {
-        return __METHOD__;
+        return 'cooool';
     }
 }
 
 class Dude {
     public $test_property = 'cool';
     
-    static function extended($object) {
-        if (is_object($object)) $object = get_class($object);
-        // echo $object.' extended Dude'."\n";
-    }
-    
     function super_test($name) {
-        return __METHOD__ . ' ' . $this->super($name);
+        return $this->super($name);
     }
     
     function testing2() {
-        return __METHOD__;
+        return 'this is a returned value';
+    }
+    
+    function delegated() {
+        return 'delegated from Dude'."\n";
     }
 }
 
@@ -88,10 +87,6 @@ class UhOh {
 
 class Testing extends Object {
     
-    function initialize() {
-        extend($this, 'Whoa', 'Dude');
-    }
-    
     function real_method() {
         return 'real_method';
     }
@@ -101,3 +96,4 @@ class Testing extends Object {
     }
     
 }
+Testing::extend('Whoa', 'Dude');

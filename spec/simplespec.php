@@ -131,6 +131,12 @@ function expects($subject) {
     return $object->expect($subject);
 }
 
+function expect($subject) {
+    $trace = debug_backtrace();
+    $object = $trace[1]['object'];
+    return $object->expect($subject);
+}
+
 class Have_Matcher {
     function __construct($subject, $count, $runtime) {
         $this->subject = $subject;

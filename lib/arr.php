@@ -1,9 +1,22 @@
 <?php
 
-abstract class ArrayMethods {
+class Arr extends Enumerable {
+    
+    function offsetSet($offset, $value) {
+        if (empty($offset)) $offset = $this->count();
+        $this->super($offset, $value);
+    }
+    
+    function unshift($value) {
+        return array_unshift($this->array, $value);
+    }
+    
+}
+
+abstract class ArrMethods {
     
     function assoc($object) {
-        foreach ($this as $value) if ((is_array($value) || $value instanceof A) && $value[0] == $object) return $value;
+        foreach ($this as $value) if ((is_array($value) || $value instanceof Arr) && $value[0] == $object) return $value;
         return null;
     }
     
@@ -12,11 +25,11 @@ abstract class ArrayMethods {
             trigger_error('The first argument in '.$this->class.'::chunk() must be greater than 0', E_WARNING);
             return null;
         } else {
-            $result = $this->new_instance();
+            $result = call_class_method($this->class, 'new_instance');
             $index = 0;
             foreach ($this as $value) {
                 if ($index++ % $size == 0) {
-                    $result[] = $this->new_instance();
+                    $result[] = call_class_method($this->class, 'new_instance');
                     $result_index = $result->count() - 1;
                 }
                 $result[$result_index][] = $value;
@@ -48,10 +61,10 @@ abstract class ArrayMethods {
     }
     
     function flatten() {
-        $result = $this->new_instance();
+        $result = call_class_method($this->class, 'new_instance');
         foreach ($this as $value) {
-            if (is_array($value)) $value = new A($value);
-            if ($value instanceof A) {
+            if (is_array($value)) $value = new Arr($value);
+            if ($value instanceof Arr) {
                 foreach ($value->flatten() as $flattened_value) $result[] = $flattened_value;
             } else {
                 $result[] = $value;
@@ -84,16 +97,16 @@ abstract class ArrayMethods {
     }
     
     function rand($quantity = 1) {
-        return $this->new_instance(array_rand($this->array, $quantity));
+        return call_class_method($this->class, 'new_instance', array(array_rand($this->array, $quantity)));
     }
     
     function rassoc($object) {
-        foreach ($this as $value) if ((is_array($value) || $value instanceof A) && $value[1] == $object) return $value;
+        foreach ($this as $value) if ((is_array($value) || $value instanceof Arr) && $value[1] == $object) return $value;
         return null;
     }
     
     function reverse() {
-        return $this->new_instance(array_reverse($this->array));
+        return call_class_method($this->class, 'new_instance', array(array_reverse($this->array)));
     }
     
     function shift() {
@@ -103,11 +116,11 @@ abstract class ArrayMethods {
     function shuffle() {
         $array = $this->array;
         shuffle($array);
-        return $this->new_instance($array);
+        return call_class_method($this->class, 'new_instance', array($array));
     }
     
     function slice($offset, $length) {
-        return $this->new_instance(array_slice($this->array, $offset, $length));
+        return call_class_method($this->class, 'new_instance', array(array_slice($this->array, $offset, $length)));
     }
     
     function splice($offset, $length = 0, $replacement = array()) {
@@ -116,7 +129,7 @@ abstract class ArrayMethods {
     }
     
     function to_h() {
-        return $this->chunk(2)->inject(new H, '$object[$value[0]] = $value[1]; return $object;');
+        return $this->chunk(2)->inject(new Hash, '$object[$value[0]] = $value[1]; return $object;');
     }
     
     function transpose() {
@@ -124,35 +137,25 @@ abstract class ArrayMethods {
     }
     
     function unique() {
-        return $this->new_instance(array_unique($this->array));
+        return call_class_method($this->class, 'new_instance', array(array_unique($this->array)));
     }
     
     function unshift($arguments) {
         $arguments = func_get_args();
-        array_shift($arguments, $this->array);
+        array_shift($arguments, &$this->array);
         return eval('return '.build_function_call('array_unshift', $arguments).';');
     }
     
 }
 
-class A extends Enumerable {
+Arr::extend('ArrMethods');
 
-    static $extended = array();
+Arr::alias_method('implode', 'join');
+Arr::alias_method('in_groups_of', 'chunk');
+Arr::alias_method('uniq', 'unique');
 
-    function offsetSet($offset, $value) {
-        if (empty($offset)) $offset = $this->count();
-        $this->super($offset, $value);
-    }
-
-    function unshift($value) {
-        return array_unshift($this->array, $value);
-    }
-
+# Convenience function
+function a () {
+  $args = func_get_args();
+  return new Arr($args);
 }
-
-extend('A', 'ArrayMethods');
-alias_method('A', 'implode', 'join');
-alias_method('A', 'in_groups_of', 'chunk');
-alias_method('A', 'uniq', 'unique');
-
-?>

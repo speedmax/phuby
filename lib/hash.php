@@ -1,22 +1,24 @@
 <?php
 
+class Hash extends Enumerable { }
+
 abstract class HashMethods {
     
     function invert() {
-        return $this->new_instance(array_flip($this->array));
+        return call_class_method($this->class, 'new_instance', array(array_flip($this->array)));
     }
     
     function merge($hash) {
         if ($hash instanceof Enumerable) $hash = $hash->array;
-        return $this->new_instance(array_merge($this->array, $hash));
+        return call_class_method($this->class, 'new_instance', array(array_merge($this->array, $hash)));
     }
     
     function shift() {
-        return (empty($this->array)) ? $this->super() : new A(array($this->keys()->shift(), $this->super()));
+        return (empty($this->array)) ? $this->super() : new Arr(array($this->keys()->shift(), $this->super()));
     }
     
     function to_a() {
-        return $this->inject(new A, '$object[] = new A(array($key, $value)); return $object;');
+        return $this->inject(new Arr, '$object[] = new A(array($key, $value)); return $object;');
     }
     
     function update($hash) {
@@ -27,11 +29,6 @@ abstract class HashMethods {
     
 }
 
-class H extends Enumerable {
-    static $extended = array();
-}
+Hash::extend('HashMethods');
 
-extend('H', 'HashMethods');
-alias_method('H', 'flip', 'invert');
-
-?>
+Hash::alias_method('flip', 'invert');

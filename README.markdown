@@ -12,14 +12,12 @@ rubyisms in php
 
 ## Features
 
-INCOMPLETE
-
-* mixins - methods and properties can be added to an existing class OR instance of an object
-* alias\_method and alias\_method\_chain (also works at the class OR instance level)
-* Object class (all classes should inherit from this)
-* Enumerable, A (array), and H (hash) classes
-* blocks (as strings)
-* structs
+* A base `Object` class (all classes should inherit from this)
+* Mixins - `Post::extend('Validations');`
+* alias\_method - `Post::alias_method('save_with_validation', 'save');`
+* alias\_method\_chain - `Post::alias_method_chain('save', 'validation');`
+* Procs - `$proc = new Proc('name', 'echo "hello $name";'); $proc->call('Sean');`
+* Various classes and modules from the standard ruby library like `Enumerable`, `Arr`, `Hash`, `Struct`, etc
 
 
 ## Usage

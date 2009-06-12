@@ -1,10 +1,7 @@
 <?php
 
-require_once 'lib/functions.php';
-require_once 'lib/object.php';
-require_once 'lib/enumerable.php';
-require_once 'lib/array.php';
-require_once 'lib/hash.php';
-require_once 'lib/struct.php';
+if (!defined('DS')) define('DS', DIRECTORY_SEPARATOR);
 
-?>
+require_once 'lib'.DS.'functions.php';
+
+spl_autoload_register('phuby_autoload');
