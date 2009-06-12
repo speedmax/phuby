@@ -13,6 +13,7 @@ if (!function_exists('get_called_class')) {
     }
 }
 
+<<<<<<< HEAD:lib/functions.php
 
 # Class related
 function get_class_variable($class, $variable) {
@@ -66,6 +67,50 @@ function build_function_call($function, $arguments = array(), $variable_name = '
         $join = '::';
     }
     return join($join, $function).'('.splat($arguments, $variable_name).')';
+=======
+function build_function_call($function, $arguments = array(), $variable_name = 'arguments') {
+    if (!is_array($function)) $function = array($function);
+    if (is_object($function[0])) { 
+        $function[0] = get_class($function[0]);
+        $join = '->';
+    } else {
+        $join = '::';
+    }
+    return join($join, $function).'('.splat($arguments, $variable_name).')';
+}
+
+function &call_class_method($class, $method, $arguments = array()) {
+    eval('$result = &'.build_function_call(array($class, $method), $arguments).';');
+    return $result;
+}
+
+function evaluate_block($block, $binding = array()) {
+    $parameters = array_merge(array_keys($binding), array($block));
+    eval('$proc = '.build_function_call('proc', $parameters, 'parameters').';');
+    return $proc->call_array(array_values($binding));
+}
+
+function get_class_variable($class, $variable) {
+    return eval('return '.$class.'::$'.$variable.';');
+}
+
+function phuby_autoload($class) {
+    $namespaces = split('::', $class);
+    $file = '..'.DS.'lib';
+    foreach ($namespaces as $namespace) {
+        $file .= DS.strtolower(preg_replace('/[^A-Z^a-z^0-9]+/', '_', preg_replace('/([a-z\d])([A-Z])/', '\1_\2', preg_replace('/([A-Z]+)([A-Z][a-z])/', '\1_\2', $namespace))));
+    }
+    require_once $file.'.php';
+}
+
+function proc($block) {
+    $arguments = func_get_args();
+    return eval('return '.build_function_call('new Proc', $arguments).';');
+}
+
+function set_class_variable($class, $variable, $value) {
+    eval($class.'::$'.$variable.' = $value;');
+>>>>>>> f589350f1efe86df7ec5ae956d89e5b59bed9f7e:lib/functions.php
 }
 
 function splat($arguments, $variable_name = 'arguments') {

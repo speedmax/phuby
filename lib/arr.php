@@ -149,6 +149,7 @@ abstract class ArrMethods {
 }
 
 Arr::extend('ArrMethods');
+<<<<<<< HEAD:lib/arr.php
 
 Arr::alias_method('implode', 'join');
 Arr::alias_method('in_groups_of', 'chunk');
@@ -159,3 +160,9 @@ function a () {
   $args = func_get_args();
   return new Arr($args);
 }
+=======
+
+Arr::alias_method('implode', 'join');
+Arr::alias_method('in_groups_of', 'chunk');
+Arr::alias_method('uniq', 'unique');
+>>>>>>> f589350f1efe86df7ec5ae956d89e5b59bed9f7e:lib/arr.php

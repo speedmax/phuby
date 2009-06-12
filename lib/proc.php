@@ -31,7 +31,14 @@ abstract class ProcMethods {
                 trigger_error('Missing argument '.($index + 1).' in Proc::call()', E_USER_WARNING);
             }
         }
+<<<<<<< HEAD:lib/proc.php
         unset($index, $parameter, $parameter_name, $values);
+=======
+        unset($index);
+        unset($parameter);
+        unset($parameter_name);
+        unset($values);
+>>>>>>> f589350f1efe86df7ec5ae956d89e5b59bed9f7e:lib/proc.php
         extract($this->binding, EXTR_REFS);
         extract($arguments);
         return eval($this->block);
